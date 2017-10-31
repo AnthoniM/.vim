@@ -134,6 +134,9 @@ augroup END
 "{{{
 augroup filetype_vim
     autocmd!
+    " use the right syntax for single quote strings like ''''
+    autocmd FileType vim :syntax region vimSingleQuoteString start=/\'/ skip=/\'\'/ end=/\'/
+    autocmd FileType vim :highlight link vimSingleQuoteString String
     " source .vimrc every time it is saved
     autocmd BufWritePost .vimrc source %
     " make folds work with {{{ }}} markers
