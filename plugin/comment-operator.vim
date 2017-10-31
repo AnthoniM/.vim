@@ -37,13 +37,7 @@ endfunction
 
 function! s:UncommentOperator(type, char)
     let saved_cursor = getcurpos()
-    if a:type ==# 'v'
-        let range = '''<,''>'
-    elseif a:type ==# 'char' || a:type ==# 'line'
-        let range = '''[,'']'
-    else
-        return
-    endif
+    let range = s:GetRange(a:type)
     execute range.'s/\v^\s*\zs'.a:char.'(\s?)/\1\1/'
     noh
     call setpos('.', saved_cursor)
@@ -51,14 +45,16 @@ endfunction
 
 function! s:CommentOperator(type, char)
     let saved_cursor = getcurpos()
-    if a:type ==# 'v'
-        let range = '''<,''>'
-    elseif a:type ==# 'char' || a:type ==# 'line'
-        let range = '''[,'']'
-    else
-        return
-    endif
+    let range = s:GetRange(a:type)
     execute range.'s/\v(^\s*\zs'.a:char.'\ze\s*|^\s?\ze)/'.a:char.'/'
     noh
     call setpos('.', saved_cursor)
+endfunction
+
+function! s:GetRange(type)
+    if a:type ==# 'char' || a:type ==# 'line'
+        return '''[,'']'
+    else
+        return '''<,''>'
+    endif
 endfunction
