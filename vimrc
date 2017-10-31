@@ -55,16 +55,15 @@ nnoremap <leader>dw mq:%s/\v\s+$//ge<cr>`q
 nnoremap / /\v
 " Stop highlighting items for the last search
 nnoremap <leader>/ :nohlsearch<cr>
-" Move towards brackets to any indentation
+" move towards brackets to any indentation
+" Move through sections
 "map [[ ?{<cr>w99[{
 "map ][ /}<cr>b99]}
 "map ]] j0[[%/{<cr>
 "map [] k$][%?}<cr>
 " }}}
 
-"
 " operator-pending mappings
-"
 "{{{
 onoremap p i(
 " in/around next/last parenthesis
@@ -78,34 +77,6 @@ onoremap il{ :<c-u>normal! F}vi{<cr>
 onoremap an{ :<c-u>normal! f{va{<cr>
 onoremap al{ :<c-u>normal! F}va{<cr>
 " }}}
-
-" Comment insertion using 'm' and 'M' keys
-"{{{
-"augroup comments
-"   autocmd!
-"   " Short cut for comments in different languages
-"   autocmd FileType vim nnoremap <buffer> <silent> <localleader>M mq:s/\v^\s*\zs"(\s?)/\1\1/e<cr>:noh<cr>`q
-"   autocmd FileType vim vnoremap <buffer> <silent> <localleader>M :s/\v^\s*\zs"(\s?)/\1\1/e<cr>:noh<cr>
-""   autocmd FileType vim nnoremap <buffer> <silent> <localleader>m mq:s/\v^\s?\ze/"/e<cr>:noh<cr>`q
-"   autocmd FileType vim nnoremap <buffer> <silent> <localleader>m mq:s/\v(^\s*\zs"\ze\s*\|^\s?\ze)/"/e<cr>:noh<cr>`q
-"   autocmd FileType vim vnoremap <buffer> <silent> <localleader>m :s/\v^\s?\ze/"/e<cr>:noh<cr>
-"   autocmd FileType python nnoremap <buffer> <silent> <localleader>M mq:s/\v^\s*\zs#(\s?)/\1\1/e<cr>:noh<cr>`q
-"   autocmd FileType python vnoremap <buffer> <silent> <localleader>M :s/\v^\s*\zs#(\s?)/\1\1/e<cr>:noh<cr>
-"   autocmd FileType python nnoremap <buffer> <silent> <localleader>m mq:s/\v^\s?\ze/#/e<cr>:noh<cr>`q
-"   autocmd FileType python vnoremap <buffer> <silent> <localleader>m :s/\v^\s?\ze/#/e<cr>:noh<cr>
-"   autocmd FileType javascript,cpp,php nnoremap <buffer> <silent> <localleader>M mq:s/\v^\s*\zs\/\/(\s?)/\1\1/e<cr>:noh<cr>`q
-"   autocmd FileType javascript,cpp,php vnoremap <buffer> <silent> <localleader>M :s/\v^\s*\zs\/\/(\s?)/\1\1/e<cr>:noh<cr>
-"   autocmd FileType javascript,cpp,php nnoremap <buffer> <silent> <localleader>m mq:s/\v^\s?\ze/\/\//e<cr>:noh<cr>`q
-"   autocmd FileType javascript,cpp,php vnoremap <buffer> <silent> <localleader>m :s/\v^\s?\ze/\/\//e<cr>:noh<cr>
-"augroup END
-"}}}
-
-function! Comment(type)
-    let saved_cursor = getcurpos()
-    execute 's/\v(^\s*\zs'.type.'\ze\s*\|^\s?\ze)/'.type,'/e'
-    noh
-    call setpos('.', saved_cursor)
-endfunction
 
 " File layout
 "{{{
@@ -145,6 +116,8 @@ augroup statements_shortcuts
     autocmd FileType javascript,cpp,php :nnoremap <buffer> <localleader>; mqA;<esc>`q
 augroup END
 "}}}
+
+" Code to purify taken from examples
 augroup learnvimthehardway
     autocmd!
     " Double quotations
@@ -176,12 +149,11 @@ augroup filetype_vim
     " while
     autocmd FileType vim :inoreabbrev <buffer> whil while<cr>endwhile<esc>kA
     " functions
-    autocmd FileType vim :inoreabbrev <buffer> func function!()<cr>endfunction<esc>k0t(a
+    autocmd FileType vim :inoreabbrev <buffer> func function!()<cr>endfunction<esc>:execute "normal! k0t(a"
     " return
-    autocmd FileType vim :inoreabbrev <buffer> ret return
+    autocmd filetype vim :inoreabbrev <buffer> ret return
 augroup END
 "}}}
-
 
 "
 " Abbreviations
@@ -276,8 +248,8 @@ nnoremap j gj
 nnoremap k gk
 
 "move to beginning/end of line
-nnoremap B ^
-nnoremap E $
+"nnoremap b ^
+"nnoremap e $
 
 " $/^ doesn't  do anything
 nnoremap ^ <nop>
@@ -286,32 +258,12 @@ nnoremap $ <nop>
 " highlight last inserted text
 nnoremap gV `[V`]
 
-
 " tuggle gundo
-nnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>u :GundoToggle<cr>
 
-" save session / reopen ot with 'vim -S'
-nnoremap <leader>s :mksession<CR>
+" save session / reopen it with 'vim -S'
+nnoremap <leader>s :mksession<cr>
 
-" open ag.vim
-"nnoremap <leader>a :Ag  (ag was depecated)
-
-
-let g:ackprg = 'ag --vimgrep --smart-case'
-cnoreabbrev ag Ack
-cnoreabbrev aG Ack
-cnoreabbrev Ag Ack
-cnoreabbrev AG Ack
-
-"
-" CtrlP
-"
-
-" CtrlP settings
-let g:ctrlp_match_window = 'bottom,order:tbb'
-let g:ctrlp_switch_buffer = 0
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 "Enable HTML syntax highlighting inside strings: >
 let php_htmlInStrings = 1
 
@@ -319,14 +271,12 @@ let php_htmlInStrings = 1
 " Launch Config
 "
 
-call pathogen#infect() " use pathogen
+"call pathogen#infect() " use pathogen
 "call pathogen#runtime_append_all_bundles() " use pathogen
-
 
 "
 " Autogroups
 "
-
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
