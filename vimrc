@@ -149,7 +149,7 @@ augroup filetype_vim
     " while
     autocmd FileType vim :inoreabbrev <buffer> whil while<cr>endwhile<esc>kA
     " functions
-    autocmd FileType vim :inoreabbrev <buffer> func function!()<cr>endfunction<esc>:execute "normal! k0t(a"
+    autocmd FileType vim :inoreabbrev <buffer> func function!()<cr>endfunction<esc>:execute "normal! k0t(a"<cr>
     " return
     autocmd filetype vim :inoreabbrev <buffer> ret return
 augroup END
