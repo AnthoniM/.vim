@@ -56,10 +56,6 @@ nnoremap / /\v
 " Stop highlighting items for the last search
 nnoremap <leader>/ :nohlsearch<cr>
 " Move through sections
-noremap <script> <buffer> <silent> [[ <nop>
-noremap <script> <buffer> <silent> ]] <nop>
-noremap <script> <buffer> <silent> [] <nop>
-noremap <script> <buffer> <silent> ][ <nop>
 "map [[ ?{<cr>w99[{
 "map ][ /}<cr>b99]}
 "map ]] j0[[%/{<cr>
@@ -147,9 +143,9 @@ augroup filetype_vim
     " if
     autocmd FileType vim :inoreabbrev <buffer> iff if<cr>endif<esc>kA
     " else
-    autocmd FileType vim :inoreabbrev <buffer> el <cr>else<cr><left>
+    autocmd FileType vim :inoreabbrev <buffer> el else<cr><left>
     " else if
-    autocmd FileType vim :inoreabbrev <buffer> elif <cr>elseif
+    autocmd FileType vim :inoreabbrev <buffer> elif elseif
     " for
     autocmd FileType vim :inoreabbrev <buffer> forr for in <cr>endfor<esc>k0Tri
     " while
