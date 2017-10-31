@@ -157,6 +157,43 @@ augroup filetype_vim
 augroup END
 "}}}
 
+" HTML file settings
+"{{{
+augroup filetype_html
+    autocmd!
+    " define abbreviation for common tags.
+augroup END
+"}}}
+
+" PHP file settings
+"{{{
+augroup filetype_php
+    autocmd!
+    " html heredoc
+    autocmd FileType php :inoreabbrev <buffer> htmll echo <<<_HTML<cr>_HTML;<esc>O
+    " SQL heredoc
+    autocmd FileType php :inoreabbrev <buffer> sqll echo <<<_SQL<cr>_SQL;<esc>O
+    " if
+    autocmd FileType php :inoreabbrev <buffer> iff if ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    " else
+    autocmd FileType php :inoreabbrev <buffer> el else<cr>{<cr>}<esc>kkA
+    " else if
+    autocmd FileType php :inoreabbrev <buffer> elif elseif ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    " for
+    autocmd FileType php :inoreabbrev <buffer> forr for (;;)<cr>{<cr>}<esc>kk0t)%a<c-r>=Eatchar('\s')<cr>
+    " foreach
+    autocmd FileType php :inoreabbrev <buffer> fore foreach ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    " while
+    autocmd FileType php :inoreabbrev <buffer> whil while ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    " do...while
+    autocmd FileType php :inoreabbrev <buffer> dow do{<cr>}while()<esc>i<c-r>=Eatchar('\s')<cr>
+    " functions
+    autocmd FileType php :inoreabbrev <buffer> func function ()<cr>{<cr>}<esc>kk0t)i<c-r>=Eatchar('\s')<cr>
+    " return
+    autocmd filetype php :inoreabbrev <buffer> ret return ;<left>
+augroup END
+"}}}
+
 "
 " Abbreviations
 "
@@ -269,12 +306,15 @@ nnoremap <leader>s :mksession<cr>
 "Enable HTML syntax highlighting inside strings: >
 let php_htmlInStrings = 1
 
+" ignore case unless search with capital letters
+set smartcase
+
 "
 " Launch Config
 "
 
-"call pathogen#infect() " use pathogen
-"call pathogen#runtime_append_all_bundles() " use pathogen
+call pathogen#infect() " use pathogen
+call pathogen#runtime_append_all_bundles() " use pathogen
 
 "
 " Autogroups
@@ -316,3 +356,9 @@ set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
+
+" Eat space when using iabbrev
+function! Eatchar(pat)
+  let c = nr2char(getchar(0))
+  return (c =~ a:pat) ? '' : c
+endfunction
