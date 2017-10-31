@@ -55,8 +55,11 @@ nnoremap <leader>dw mq:%s/\v\s+$//ge<cr>`q
 nnoremap / /\v
 " Stop highlighting items for the last search
 nnoremap <leader>/ :nohlsearch<cr>
-" move towards brackets to any indentation
 " Move through sections
+noremap <script> <buffer> <silent> [[ <nop>
+noremap <script> <buffer> <silent> ]] <nop>
+noremap <script> <buffer> <silent> [] <nop>
+noremap <script> <buffer> <silent> ][ <nop>
 "map [[ ?{<cr>w99[{
 "map ][ /}<cr>b99]}
 "map ]] j0[[%/{<cr>
@@ -152,7 +155,7 @@ augroup filetype_vim
     " while
     autocmd FileType vim :inoreabbrev <buffer> whil while<cr>endwhile<esc>kA
     " functions
-    autocmd FileType vim :inoreabbrev <buffer> func function!()<cr>endfunction<esc>:execute "normal! k0t(a"<cr>
+    autocmd FileType vim :inoreabbrev <buffer> func function!()<cr>endfunction<esc>:execute "normal! k0t("<cr>a
     " return
     autocmd filetype vim :inoreabbrev <buffer> ret return
 augroup END
