@@ -172,6 +172,69 @@ augroup END
 augroup filetype_html
     autocmd!
     " define abbreviation for common tags.
+    autocmd FileType php,html :inoreabbrev <buffer> br <br>
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> pre <pre><cr></pre><esc>O
+    autocmd FileType php,html :inoreabbrev <buffer> inp <input type="submit">
+    " text boxes
+    autocmd FileType php,html :inoreabbrev <buffer> tbox <input type="text" name="name"><esc>
+                \2T"viw<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> vtbox
+                \ <input type="text" name="name" value="value"><esc>
+                \:execute '/\%'.line(".").'l\("text"\)\@!"\zs\w*\.\=\w*\ze"'
+                \<cr>ngn
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> gtbox
+                \ <input type="text" name="name" size="size" maxlength="length" value="value"><esc>
+                \:execute '/\%'.line(".").'l\("text"\)\@!"\zs\w*\.\=\w*\ze"'
+                \<cr>ngn
+                \<c-r>=Eatchar('\s')<cr>
+    " text areas
+    autocmd FileType php,html :inoreabbrev <buffer> tarea
+                \ <textarea name="name", cols="width" rows="height" wrap="soft"><cr>
+                \</textarea><esc>
+                \k
+                \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
+                \<cr>ngn
+                \<c-r>=Eatchar('\s')<cr>
+    " checkboxes
+    autocmd filetype php,html :inoreabbrev <buffer> cbox
+                \ <input type="checkbox" name="name" value="on" checked="checked"><esc>
+                \:execute '/\%'.line(".").'l\("checkbox"\)\@!"\zs\w*\.\=\w*\ze"'
+                \<cr>ngn
+                \<c-r>=Eatchar('\s')<cr>
+    " radio buttons
+    autocmd filetype php,html :inoreabbrev <buffer> rdio
+                \ <input type="radio" name="name" value="value"><esc>
+                \:execute '/\%'.line(".").'l\("radio"\)\@!"\zs\w*\.\=\w*\ze"'
+                \<cr>ngn
+                \<c-r>=Eatchar('\s')<cr>
+    " hidden fields
+    autocmd filetype php,html :inoreabbrev <buffer> hfield
+                \ <input type="hidden" name="name" value="value"><esc>
+                \:execute '/\%'.line(".").'l\("hidden"\)\@!"\zs\w*\.\=\w*\ze"'
+                \<cr>ngn
+                \<c-r>=Eatchar('\s')<cr>
+    " select
+    autocmd filetype php,html :inoreabbrev <buffer> sele
+                \ <select name="name" size="size" multiple="multiple"><cr></select><esc>
+                \k
+                \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
+                \<cr>ngn
+                \<c-r>=Eatchar('\s')<cr>
+    " option
+    autocmd filetype php,html :inoreabbrev <buffer> opt
+                \ <option value="value"></option><esc>
+                \:execute '/\%'.line(".").'l"\zsvalue\ze"'
+                \<cr>ngn
+                \<c-r>=Eatchar('\s')<cr>
+    " forms
+    autocmd FileType php,html :inoreabbrev <buffer> formm
+                \ <form method="post" action="dummy.php"><cr></form><esc>
+                \k
+                \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
+                \<cr>ngn
+                \<c-r>=Eatchar('\s')<cr>
 augroup END
 "}}}
 
