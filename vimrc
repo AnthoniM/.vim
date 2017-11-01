@@ -65,6 +65,16 @@ nnoremap <leader>/ :nohlsearch<cr>
 " operator-pending mappings
 "{{{
 onoremap p i(
+" in/around next/last single quotes
+onoremap in' :<c-u>normal! f'vi'<cr>
+onoremap il' :<c-u>normal! F'vi'<cr>
+onoremap an' :<c-u>normal! f'va'<cr>
+onoremap al' :<c-u>normal! F'va'<cr>
+" in/around next/last double quotes
+onoremap in" :<c-u>normal! f"vi"<cr>
+onoremap il" :<c-u>normal! F"vi"<cr>
+onoremap an" :<c-u>normal! f"va"<cr>
+onoremap al" :<c-u>normal! F"va"<cr>
 " in/around next/last parenthesis
 onoremap in( :<c-u>normal! f(vi(<cr>
 onoremap il( :<c-u>normal! F)vi(<cr>
