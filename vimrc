@@ -55,6 +55,10 @@ nnoremap <leader>dw mq:%s/\v\s+$//ge<cr>`q
 nnoremap / /\v
 " Stop highlighting items for the last search
 nnoremap <leader>/ :nohlsearch<cr>
+vnoremap <leader>/ :nohlsearch<cr>
+" Move trough search and visually select results
+vnoremap n ungn
+vnoremap N uNgN
 " Move through sections
 "map [[ ?{<cr>w99[{
 "map ][ /}<cr>b99]}
