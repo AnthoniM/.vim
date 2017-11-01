@@ -251,15 +251,21 @@ augroup filetype_php
     " SQL heredoc
     autocmd FileType php :inoreabbrev <buffer> sqll echo <<<_SQL<cr>_SQL;<esc>O
     " if
-    autocmd FileType php :inoreabbrev <buffer> iff if ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    autocmd filetype php :inoreabbrev <buffer> iff if ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    autocmd filetype php :inoreabbrev <buffer> inif if () ;<esc>T)hi<c-r>=Eatchar('\s')<cr>
     " else
     autocmd FileType php :inoreabbrev <buffer> el else<cr>{<cr>}<esc>kkA
+    autocmd FileType php :inoreabbrev <buffer> elin else ;<left>
     " else if
     autocmd FileType php :inoreabbrev <buffer> elif elseif ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
     " for
     autocmd FileType php :inoreabbrev <buffer> forr for (;;)<cr>{<cr>}<esc>kk0t)%a<c-r>=Eatchar('\s')<cr>
     " foreach
     autocmd FileType php :inoreabbrev <buffer> fore foreach ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php :inoreabbrev <buffer> infore foreach
+                \ () ;<esc>
+                \T)hi
+                \<c-r>=Eatchar('\s')<cr>
     " while
     autocmd FileType php :inoreabbrev <buffer> whil while ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
     " do...while
