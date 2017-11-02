@@ -4,7 +4,7 @@ nnoremap <buffer> <localleader>mm :call <SID>CommentOperator('',1)<cr>
 nnoremap <buffer> <localleader>m :set operatorfunc=<SID>Comment<cr>g@
 vnoremap <buffer> <localleader>m :<c-u>call <SID>Comment(visualmode())<cr>
 
-let s:specialcharacters = '\\/.*$^~[]'
+let s:specialcharacters = '\/.*$^~[]'
 
 function! s:Comment(type)
     call s:CommentOperator(a:type, 0)
@@ -14,12 +14,13 @@ function! s:CommentOperator(type, indent)
     let saved_cursor = getcurpos()
     let curline = saved_cursor[1]
     let range = s:GetRange(a:type)
-    "NOTE : For now it only works if we comment with only a left delimiter.
+    " NOTE: For now it only works if we comment with only a left delimiter.
     let left = b:CommenterDelims['left']
     " Move the cursor one line up so that a match can occur on the previous line. 
     let match = search('\%'.curline.'l^\s*'.escape(left, s:specialcharacters))
     " If the current line is commented uncomment the whole block.
     " Otherwise comment the whole block.
+    let left = escape(left, '/')
     if match
         execute range.'s/\v^\s*\zs'.left.'(\s?)/\1\1/'
     else
