@@ -284,7 +284,7 @@ augroup filetype_php
     autocmd filetype php :inoreabbrev <buffer> inif if () ;<esc>T)hi<c-r>=Eatchar('\s')<cr>
     " else
     autocmd FileType php :inoreabbrev <buffer> el else<cr>{<cr>}<esc>kkA
-    autocmd FileType php :inoreabbrev <buffer> elin else ;<left>
+    autocmd FileType php :inoreabbrev <buffer> inel else ;<left>
     " else if
     autocmd FileType php :inoreabbrev <buffer> elif elseif ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
     " for
@@ -425,8 +425,8 @@ set smartcase
 " Launch Config
 "
 
-call pathogen#infect() " use pathogen
-call pathogen#runtime_append_all_bundles() " use pathogen
+"call pathogen#infect() " use pathogen
+"call pathogen#runtime_append_all_bundles() " use pathogen
 
 "
 " Autogroups
