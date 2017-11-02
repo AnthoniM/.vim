@@ -168,15 +168,38 @@ augroup filetype_vim
 augroup END
 "}}}
 
+function! InsertTag()
+    let cursor = getcurpos()
+    let row = cursor[1]
+    let col = cursor[2]
+    let name = input("Enter tag name : ")
+    let begin_tag = '<'.name.'>'
+    let end_tag = '</'.name.'>'
+    execute 'normal! diw'
+                \.col."i\<space>\<esc>a"
+                \.begin_tag
+                \."\n\n\<esc>"
+                \.col."i\<space>\<esc>a"
+                \.end_tag
+                \."\<esc>k"
+                \.col."i\<space>\<esc>a"
+    startinsert!
+endfunction
 " HTML file settings
 "{{{
 augroup filetype_html
     autocmd!
+    " insert tags
+    autocmd FileType php,html :inoreabbrev <buffer> tag <esc>:call InsertTag()<cr>
+                \<c-r>=Eatchar('\s')<cr>
     " define abbreviation for common tags.
     autocmd FileType php,html :inoreabbrev <buffer> br <br>
                 \<c-r>=Eatchar('\s')<cr>
     autocmd FileType php,html :inoreabbrev <buffer> pre <pre><cr></pre><esc>O
-    autocmd FileType php,html :inoreabbrev <buffer> inp <input type="submit">
+    " submit button
+    autocmd FileType php,html :inoreabbrev <buffer> sub <input type="submit" value="search"><esc>
+                \2T"viw
+                \<c-r>=Eatchar('\s')<cr>
     " text boxes
     autocmd FileType php,html :inoreabbrev <buffer> tbox <input type="text" name="name"><esc>
                 \2T"viw<c-r>=Eatchar('\s')<cr>
@@ -236,6 +259,15 @@ augroup filetype_html
                 \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
                 \<cr>ngn
                 \<c-r>=Eatchar('\s')<cr>
+    " labels
+    autocmd FileType php,html :inoreabbrev <buffer> inlbl
+                \ <label></label><esc>
+                \T<hi
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> lbl
+                \ <label><cr></label><esc>
+                \O
+                \<c-r>=Eatchar('\s')<cr>
 augroup END
 "}}}
 
@@ -244,7 +276,7 @@ augroup END
 augroup filetype_php
     autocmd!
     " html heredoc
-    autocmd FileType php :inoreabbrev <buffer> htmll echo <<<_HTML<cr>_HTML;<esc>O
+    autocmd FileType php :inoreabbrev <buffer> htmll echo <<<_HTML<cr><bs>_HTML;<esc>O
     " SQL heredoc
     autocmd FileType php :inoreabbrev <buffer> sqll echo <<<_SQL<cr>_SQL;<esc>O
     " if
