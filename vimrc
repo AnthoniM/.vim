@@ -59,11 +59,6 @@ vnoremap <leader>/ :nohlsearch<cr>
 " Move trough search and visually select results
 vnoremap n ungn
 vnoremap N uNgN
-" Move through sections
-"map [[ ?{<cr>w99[{
-"map ][ /}<cr>b99]}
-"map ]] j0[[%/{<cr>
-"map [] k$][%?}<cr>
 " }}}
 
 " operator-pending mappings
@@ -168,6 +163,8 @@ augroup filetype_vim
     autocmd FileType vim :inoreabbrev <buffer> func function!()<cr>endfunction<esc>:execute "normal! k0t("<cr>a
     " return
     autocmd filetype vim :inoreabbrev <buffer> ret return
+    " try
+    autocmd filetype vim :inoreabbrev <buffer> tryy try<cr>endtry<esc>O
 augroup END
 "}}}
 
