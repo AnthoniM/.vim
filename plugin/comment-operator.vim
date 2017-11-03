@@ -1,8 +1,8 @@
 autocmd BufRead,BufEnter * :call s:SetUpForNewFiletype(&filetype)
 
-nnoremap <buffer> <localleader>mm :call <SID>CommentOperator('',1)<cr>
-nnoremap <buffer> <localleader>m :set operatorfunc=<SID>Comment<cr>g@
-vnoremap <buffer> <localleader>m :<c-u>call <SID>Comment(visualmode())<cr>
+nnoremap <localleader>mm :call <SID>CommentOperator('',1)<cr>
+nnoremap <localleader>m :set operatorfunc=<SID>Comment<cr>g@
+vnoremap <localleader>m :<c-u>call <SID>Comment(visualmode())<cr>
 
 let s:specialcharacters = '\/.*$^~[]'
 
