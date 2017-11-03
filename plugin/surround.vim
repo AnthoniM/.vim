@@ -1,7 +1,15 @@
-nnoremap <leader>' :set operatorfunc=<SID>SingleQuoteSurround<cr>g@
-"vnoremap <leader>' :<c-u>call <SID>SingleQuoteSurround(visualmode())<cr>
-nnoremap <leader>" :set operatorfunc=<SID>DoubleQuoteSurround<cr>g@
-"vnoremap <leader>" :<c-u>call <SID>DoubleQuoteSurround(visualmode())<cr>
+"NOTE: Should escape the selection for the pattern to match
+nnoremap <leader>c' :set operatorfunc=<SID>SingleQuoteSurround<cr>g@
+"vnoremap <leader>c' :<c-u>call <SID>SingleQuoteSurround(visualmode())<cr>
+nnoremap <leader>c" :set operatorfunc=<SID>DoubleQuoteSurround<cr>g@
+"vnoremap <leader>c" :<c-u>call <SID>DoubleQuoteSurround(visualmode())<cr>
+
+"Puts word between single/double quotation marks
+nnoremap <silent> <leader>' viw:call <SID>SingleQuoteSurround('v')<cr>
+vnoremap <silent> <leader>' call <SID>SingleQuoteSurround('v')<cr>
+nnoremap <silent> <leader>" viw:call <SID>DoubleQuoteSurround('v')<cr>
+vnoremap <silent> <leader>" call <SID>DoubleQuoteSurround('v')<cr>
+"Also use <leader>c' from surround.vim to surround a more general selection
 
 let s:quote_family = [{"left" : "\'","right" : "\'"},
                      \{"left" : "\"","right" : "\""}]
@@ -17,14 +25,17 @@ function! s:DoubleQuoteSurround(type)
 endfunction
 
 function! s:Surround(tag, family, type)
-    let cursor = getcurpos()
     let saved_unnamed_register = @@
 
     " Yank the preselection for the search and save it in the unnamed register
     if a:type ==# 'v'
-        execute "normal! `<v`>y"
+        execute "normal! `<"
+        let cursor = getcurpos()
+        execute "normal! v`>y"
     elseif a:type ==# 'char'
-        execute "normal! `[v`]y"
+        execute "normal! `["
+        let cursor = getcurpos()
+        execute "normal! v`]y"
     endif
     let body = @@
 
@@ -56,16 +67,17 @@ function! s:Surround(tag, family, type)
     let expr = @@
     
     " Place or replace tags if not already present
-    echom 'match('.expr.','.a:tag['left'].body.a:tag['right'].')'
-    echom match(expr,a:tag['left'].body.a:tag['right'])
     if match(expr,a:tag['left'].body.a:tag['right'])<0
-        echom "Insert tags"
+        "echom "Insert tags"
         execute 's/\%V\v' 
                 \.field.'/'.a:tag['left'].body.a:tag['right'].'/'
         " Return to normal mode
         execute "normal! \<esc>"
+        " Move cursor after the left tag
+        let cursor[2] += len(a:tag['left'])
+        let cursor[4] += len(a:tag['left'])
     else
-        echom "Remove tags"
+        "echom "Remove tags"
         execute 's/\%V\v' 
                 \.expr.'/'.body.'/'
     endif
