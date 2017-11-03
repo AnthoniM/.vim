@@ -23,11 +23,7 @@ nnoremap \ dd
 " Uppercase word for constant declarations
 nnoremap <c-u> viwUw
 inoremap <c-u> <esc>viwUA
-"Puts word between single/double quotation marks
-nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lel
-vnoremap <leader>' <esc>`>a'<esc>`<i'<esc>`>l
-nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
-vnoremap <leader>" <esc>`>a"<esc>`<i"<esc>`>l
+
 "Move to the beginning/end of the current line
 nnoremap H 0
 nnoremap L $
@@ -156,7 +152,7 @@ augroup filetype_vim
     " else if
     autocmd FileType vim :inoreabbrev <buffer> elif elseif
     " for
-    autocmd FileType vim :inoreabbrev <buffer> forr for in <cr>endfor<esc>k0Tri
+    autocmd FileType vim :inoreabbrev <buffer> forr for in <cr>endfor<esc>k0tii
     " while
     autocmd FileType vim :inoreabbrev <buffer> whil while<cr>endwhile<esc>kA
     " functions
@@ -168,34 +164,85 @@ augroup filetype_vim
 augroup END
 "}}}
 
-function! InsertTag()
-    let cursor = getcurpos()
-    let row = cursor[1]
-    let col = cursor[2]
+function! GetTag(inline)
     let name = input("Enter tag name : ")
-    let begin_tag = '<'.name.'>'
-    let end_tag = '</'.name.'>'
-    execute 'normal! diw'
-                \.col."i\<space>\<esc>a"
-                \.begin_tag
-                \."\n\n\<esc>"
-                \.col."i\<space>\<esc>a"
-                \.end_tag
-                \."\<esc>k"
-                \.col."i\<space>\<esc>a"
-    startinsert!
+    call InsertTag(name,a:inline)
 endfunction
+function! InsertTag(name, inline)
+    let cursor = getcurpos()
+    let col = cursor[2]
+    let begin_tag = '<'.a:name.'>'
+    let end_tag = '</'.a:name.'>'
+    let indent = col."i\<space>\<esc>a"
+    if !a:inline
+        execute 'normal! diw'
+                    \.indent.begin_tag
+                    \."\n\n\<esc>"
+                    \.indent.end_tag
+                    \."\<esc>k"
+                    \.indent
+        startinsert!
+    else
+        execute 'normal! diw'
+                    \.indent.begin_tag.end_tag
+                    \."\<esc>T>"
+        startinsert
+    endif
+endfunction
+
+function! GenerateTagAbrrev(name, inline)
+    if a:inline
+        let tag = 'it'.a:name
+    else
+        let tag = 't'.a:name
+    endif
+    let command "autocmd FileType php,html :inoreabbrev <buffer> "
+                \.tag
+                \." <esc>:call InsertTag(".a:name.",".a:inline.")"<cr>
+                \<c-r>=Eatchar('\s')<cr>
+endfunction
+
 " HTML file settings
 "{{{
 augroup filetype_html
     autocmd!
-    " insert tags
-    autocmd FileType php,html :inoreabbrev <buffer> tag <esc>:call InsertTag()<cr>
-                \<c-r>=Eatchar('\s')<cr>
+    let tag_names = ['html','body','pre','head','title']
+    "
     " define abbreviation for common tags.
+    "
+    " insert a general tag
+    autocmd FileType php,html :inoreabbrev <buffer> tag <esc>:call GetTag('0')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> itag <esc>:call GetTag('0')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    " html tag
+    autocmd FileType php,html :inoreabbrev <buffer> thtml <esc>:call InsertTag('html','0')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> tihtml <esc>:call InsertTag('html','1')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    " body tag
+    autocmd FileType php,html :inoreabbrev <buffer> tbody <esc>:call InsertTag('body','0')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> tibody <esc>:call InsertTag('body','1')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    " pre tag
+    autocmd FileType php,html :inoreabbrev <buffer> tpre <esc>:call InsertTag('pre','0')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> tipre <esc>:call InsertTag('pre','1')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    " head tag
+    autocmd FileType php,html :inoreabbrev <buffer> thead <esc>:call InsertTag('head','0')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> tihead <esc>:call InsertTag('head','1')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    " title tag
+    autocmd FileType php,html :inoreabbrev <buffer> ttitle <esc>:call InsertTag('title','0')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php,html :inoreabbrev <buffer> tititle <esc>:call InsertTag('title','1')<cr>
+                \<c-r>=Eatchar('\s')<cr>
+
     autocmd FileType php,html :inoreabbrev <buffer> br <br>
                 \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> pre <pre><cr></pre><esc>O
     " submit button
     autocmd FileType php,html :inoreabbrev <buffer> sub <input type="submit" value="search"><esc>
                 \2T"viw
