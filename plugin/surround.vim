@@ -6,9 +6,9 @@ nnoremap <leader>c" :set operatorfunc=<SID>DoubleQuoteSurround<cr>g@
 
 "Puts word between single/double quotation marks
 nnoremap <silent> <leader>' viw:call <SID>SingleQuoteSurround('v')<cr>
-vnoremap <silent> <leader>' call <SID>SingleQuoteSurround('v')<cr>
+vnoremap <silent> <leader>' :<c-u>call <SID>SingleQuoteSurround('v')<cr>
 nnoremap <silent> <leader>" viw:call <SID>DoubleQuoteSurround('v')<cr>
-vnoremap <silent> <leader>" call <SID>DoubleQuoteSurround('v')<cr>
+vnoremap <silent> <leader>" :<c-u>call <SID>DoubleQuoteSurround('v')<cr>
 "Also use <leader>c' from surround.vim to surround a more general selection
 
 let s:quote_family = [{"left" : "\'","right" : "\'"},
@@ -25,6 +25,7 @@ function! s:DoubleQuoteSurround(type)
 endfunction
 
 function! s:Surround(tag, family, type)
+    " NOTE: Should save the visual mode to be able to highlight it again using gv.
     let saved_unnamed_register = @@
 
     " Yank the preselection for the search and save it in the unnamed register
