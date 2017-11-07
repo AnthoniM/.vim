@@ -4,7 +4,7 @@ nnoremap <localleader>mm :call <SID>CommentOperator('',1)<cr>
 nnoremap <localleader>m :set operatorfunc=<SID>Comment<cr>g@
 vnoremap <localleader>m :<c-u>call <SID>Comment(visualmode())<cr>
 
-let s:specialcharacters = '\/.*$^~[]'
+let s:specialcharacters = '%#'
 
 function! s:Comment(type)
     call s:CommentOperator(a:type, 0)
@@ -17,21 +17,24 @@ function! s:CommentOperator(type, indent)
     " NOTE: For now it only works if we comment with only a left delimiter.
     let left = b:CommenterDelims['left']
     " Move the cursor one line up so that a match can occur on the previous line. 
-    let match = search('\%'.curline.'l^\s*'.escape(left, s:specialcharacters))
+    let match = search('\%'.curline.'l\v^\s*'.escape(left, s:specialcharacters))
     " If the current line is commented uncomment the whole block.
     " Otherwise comment the whole block.
     let left = escape(left, '/')
     if match
-        execute range.'s/\v^\s*\zs'.left.'(\s?)/\1\1/'
+        echom range.'s/\v^\s*\zs'.escape(left, s:specialcharacters).'(\s?)/\1\1/'
+        execute range.'s/\v^\s*\zs'.escape(left, s:specialcharacters).'(\s?)/\1\1/'
     else
         if !a:indent
             " Insert comment at the beginning of the line.
             " Don't move text if possible
-            execute range.'s/\v^\s?\ze/'.left.'/'
+            echom range.'s/\v^\s?\ze/'.escape(left, s:specialcharacters).'/'
+            execute range.'s/\v^\s?\ze/'.escape(left, s:specialcharacters).'/'
         else
             " Insert comment at indentation.
             " Always move text.
-            execute range.'s/\v^(\s*)\ze/\1'.left.'/'
+            echom range.'s/\v^(\s*)\ze/\1'.escape(left, s:specialcharacters).'/'
+            execute range.'s/\v^(\s*)\ze/\1'.escape(left, s:specialcharacters).'/'
         endif
     endif
     noh
@@ -289,6 +292,7 @@ let s:delimiterMap = {
     \ 'sed': { 'left': '#' },
     \ 'sgmldecl': { 'left': '--', 'right': '--' },
     \ 'sgmllnx': { 'left': '<!--', 'right': '-->' },
+    \ 'sh': { 'left': '#' },
     \ 'sicad': { 'left': '*' },
     \ 'simula': { 'left': '%', 'leftAlt': '--' },
     \ 'sinda': { 'left': '$' },
@@ -324,6 +328,8 @@ let s:delimiterMap = {
     \ 'tcl': { 'left': '#' },
     \ 'texinfo': { 'left': "@c " },
     \ 'texmf': { 'left': '%' },
+    \ 'tex': { 'left': '%' },
+    \ 'plaintex': { 'left': '%' },
     \ 'tf': { 'left': ';' },
     \ 'tidy': { 'left': '#' },
     \ 'tli': { 'left': '#' },
