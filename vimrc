@@ -730,7 +730,7 @@ augroup END
 " Abbreviations
 "
 " Email
-iabbrev @@ anthonimanseau@gmail.com
+iabbrev @@@ anthonimanseau@gmail.com
 " Signature
 iabbrev ssig --<cr>Anthoni Manseau<cr>anthonimanseau@gmail.com
 
