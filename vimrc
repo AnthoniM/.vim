@@ -243,157 +243,376 @@ augroup filetype_vim
 augroup END
 "}}}
 
+" HTML functions
+"{{{
 function! GetTag(inline)
     let name = input("Enter tag name : ")
     call InsertTag(name,a:inline)
 endfunction
-function! InsertTag(name, inline)
+
+function! InsertTag(name, inline, parameters)
+    " Don't go into body if parameters are present
+    if len(a:parameters)
+        let r = ''
+    else
+        let r = "\n"
+    endif
+
+    " Define html tags
+    let insert = 1
+    let begin_tag = '<'.a:name
+    for i in items(a:parameters)
+        let begin_tag .= ' '.i[0].'="'.i[1].'"'
+        let insert = 0
+    endfor
+    let begin_tag .= '>'
+    let end_tag = '</'.a:name.'>'
+
+    " Select proper indentation
     let cursor = getcurpos()
     let col = cursor[2]
-    let begin_tag = '<'.a:name.'>'
-    let end_tag = '</'.a:name.'>'
-    let indent = col."i\<space>\<esc>a"
+    if col>1
+        let indent = col."i\<space>\<esc>a"
+    else
+        let indent = "a"
+    endif
+
+    " Write tags and remove space from abbreviation
     if !a:inline
         execute 'normal! diw'
                     \.indent.begin_tag
-                    \."\n\n\<esc>"
+                    \."\n".r."\<esc>"
                     \.indent.end_tag
-                    \."\<esc>k"
+                    \."\<esc>k0"
                     \.indent
-        startinsert!
     else
-        execute 'normal! diw'
-                    \.indent.begin_tag.end_tag
+        if a:inline>1
+            let end_tag = ''
+        endif
+        execute 'normal! a'
+                    \.begin_tag.end_tag
                     \."\<esc>T>"
-        startinsert
+    endif
+"   execute "normal! :<c-r>=Eatchar('\s')"
+
+    " Set the proper insert/view state
+    if insert
+        if !a:inline
+            startinsert!
+        else
+            startinsert
+        endif
+    else
+        execute '/\%'.line(".").'l\v("\zs\w*\ze"|"\zs\w*\ze\.\w*")'
+        execute "normal! ngn"
     endif
 endfunction
 
-function! GenerateTagAbrrev(name, inline)
-    if a:inline
-        let tag = 'it'.a:name
-    else
-        let tag = 't'.a:name
+function! GenerateTag(parameters)
+    let name = a:parameters[0]
+    let abbrev = a:parameters[1]
+    let parameters = a:parameters[2]
+    let inline = a:parameters[3]
+    if abbrev ==# "none"
+        let abbrev = name
     endif
-    let command "autocmd FileType php,html :inoreabbrev <buffer> "
-                \.tag
-                \." <esc>:call InsertTag(".a:name.",".a:inline.")"<cr>
-                \<c-r>=Eatchar('\s')<cr>
+    if inline == "0" || inline == "2"
+        call GenerateTagAbrrev(abbrev,name,"0",parameters)
+    endif
+    if inline == "1" || inline == "2"
+        call GenerateTagAbrrev(abbrev,name,"1",parameters)
+    endif
+    if inline == "3"
+        call GenerateTagAbrrev(abbrev,name,"2",parameters)
+    endif
 endfunction
+
+function! GenerateTagAbrrev(abbrev, name, inline, parameters)
+    if a:inline == 1
+        let tag = 'it'.a:abbrev
+    else
+        let tag = 't'.a:abbrev
+    endif
+    execute "autocmd FileType php,html,javascript :inoreabbrev <buffer> "
+            \.tag
+            \." <esc>:call InsertTag(\"".a:name."\",".a:inline.",".string(a:parameters).")"."<cr>"
+            \."<c-r>=Eatchar('\s')<cr>"
+endfunction
+"}}}
 
 " HTML file settings
 "{{{
 augroup filetype_html
     autocmd!
-    let tag_names = ['html','body','pre','head','title']
+    " Open current file in default browser
+    autocmd FileType php,html,javascript nnoremap <F4> :execute ':silent !xdg-open http://localhost/'.strpart(expand('%:p'),len('/var/www/html/'))<cr>:redraw!<cr>
+
+    "attribute :
+    "   style
+    "   title
+    "   lang
+    "   id
+    "   class
+    autocmd FileType php,html,javascript :inoreabbrev <buffer> astyle style="property:value;"<esc>
+                \:execute '/\%'.line(".").'l\v("\zs\w*\ze:\|:\zs\w*\ze\;")'<cr>
+                \ngn
+                \<c-r>=Eatchar('\s')<cr>
+
+    let tags =  [["html","none",{},"2"],
+                \["body","none",{},"2"],
+                \["hr","none",{},"3"],
+                \["br","none",{},"3"],
+                \["pre","none",{},"2"],
+                \["head","none",{},"2"],
+                \["title","none",{},"2"],
+                \["link","none",{"rel":"stylesheet","href":"mystyle.css"},"3"],
+                \["header","none",{},"2"],
+                \["section","none",{},"2"],
+                \["footer","none",{},"2"],
+                \["article","none",{},"2"],
+                \["nav","none",{},"2"],
+                \["aside","none",{},"2"],
+                \["details","none",{},"2"],
+                \["summary","none",{},"2"],
+                \["meta","none",{"name":"name","content":"content"},"3"],
+                \["base","none",{"href":"href","target":"_blank"},"3"],
+                \["label","none",{},"2"],
+                \["div","none",{},"2"],
+                \["span","none",{},"2"],
+                \["button","none",{"onclick":"function"},"2"],
+                \["script","none",{},"2"],
+                \["noscript","none",{},"2"],
+                \["iframe","none",{"src":"url"},"2"],
+                \["a","a",{"href":"href"},"2"],
+                \["b","bold",{},"2"],
+                \["i","it",{},"2"],
+                \["em","em",{},"2"],
+                \["small","none",{},"2"],
+                \["mark","none",{},"2"],
+                \["del","none",{},"2"],
+                \["ins","none",{},"2"],
+                \['sub',"none",{},"2"],
+                \["sup","none",{},"2"],
+                \["q","none",{},"2"],
+                \["blockquote","none",{},"2"],
+                \["abbr","none",{},"2"],
+                \["address","none",{},"2"],
+                \["cite","none",{},"2"],
+                \["style","none",{},"2"],
+                \["bdo","none",{"dir":"rtl"},"2"],
+                \["map","none",{"name":"name"},"2"],
+                \["picture","none",{},"2"],
+                \["code","none",{},"2"],
+                \["kbd","none",{},"2"],
+                \["samp","none",{},"2"],
+                \["var","none",{},"2"],
+                \["source","none",{"media":"media","srcset":"srcset"},"3"],
+                \["table","none",{},"2"],
+                \["th","none",{},"2"],
+                \["tr","none",{},"2"],
+                \["td","none",{},"2"],
+                \["caption","none",{},"2"],
+                \["ul","none",{},"2"],
+                \["ol","none",{},"2"],
+                \["li","none",{},"2"],
+                \["dl","none",{},"2"],
+                \["dt","none",{},"2"],
+                \["dd","none",{},"2"],
+                \["strong","strong",{},"2"],
+                \["h1","none",{},"2"],
+                \["h2","none",{},"2"],
+                \["h3","none",{},"2"],
+                \["h4","none",{},"2"],
+                \["h5","none",{},"2"],
+                \["h6","none",{},"2"],
+                \["img","img",{"src":"src","alt":"alt","width":"width","height":"height"},"2"],
+                \["p","none",{},"2"],
+                \["input","none",{"type":"type","value":"value"},"3"],
+                \["input","number",{"type":"number","name":"name"},"3"],
+                \["input","range",{"type":"range","name":"name","min":"min","max":"max","value":"value","step":"step"},"3"],
+                \["input","submit",{"type":"submit","value":"value"},"3"],
+                \["input","text",{"type":"text","name":"name","size":"size","maxlength":"length"},"3"],
+                \["textarea","area",{"name":"name","cols":"width","rows":"height"},"2"],
+                \["input","cbox",{"type":"checkbox","name":"name","value":"value","checked":"checked"},"3"],
+                \["input","radio",{"type":"radio","name":"name","value":"value"},"3"],
+                \["input","hidden",{"type":"hidden","name":"name","value":"value"},"3"],
+                \["select","none",{"name":"name","size":"size","multiple":"multiple"},"2"],
+                \["option","option",{"value":"value"},"2"],
+                \["form","none",{"method":"post","action":"filename.php"},"2"],
+                \["fieldset","none",{},"2"],
+                \["legend","none",{},"2"],
+                \["datalist","none",{"id":"listname"},"2"],
+                \["list","none",{"list":"listname"},"2"],
+                \]
+                "head : container for metadata
+                "title : defines title of the browser tab
+                "link : link to external style sheets
+                "header : header for a document of a section
+                "section : defines a section in a document
+                "footer : defines a footer for a document or a section
+                "article : defines an independant self-contained article
+                "nav : defines a container for navigation links
+                "aside : defines content aside for the content (like a sidebar)
+                "details : defines additionnal details
+                "summary : defines a heading for the details element
+                "base : specifies the base URL
+                "div : create a block element. Use to style block of content
+                "span : use to style part of text
+                "iframe : display web page within a web page
+                "i : italic
+                "em : emphazise
+                "mark : highlight
+                "del : cross
+                "ins : underline
+                "sub : subscript
+                "sup : supscript
+                "q : quotation
+                "blockquote : section quotation
+                "abbr : abbreviation
+                "address : address
+                "cite : defines title of a work
+                "style : defines title of a work
+                "bdo : bi-directional override
+                "map : map
+                "picture : to define different images for different browser window sizes
+                "code : computer code
+                "kbd : keyboard input
+                "samp : program output
+                "var : variables
+                "table : table
+                "th : table header
+                "tr : table row
+                "td : table column
+                "caption : caption
+                "ul : unordered list
+                "ol : ordered list
+                "li : list item
+                "dl : description list
+                "dt : defines a term
+                "dd : describe term
+                "fieldset : group related data in a form
+                "legend : caption to the <fieldset>
+                "datalist : specifies a list of pre-defined options for an <input> element
+                "list :
     "
     " define abbreviation for common tags.
     "
     " insert a general tag
-    autocmd FileType php,html :inoreabbrev <buffer> tag <esc>:call GetTag('0')<cr>
+    autocmd FileType php,html,javascript :inoreabbrev <buffer> tag <esc>:call GetTag('0')<cr>
                 \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> itag <esc>:call GetTag('0')<cr>
+    autocmd FileType php,html,javascript :inoreabbrev <buffer> itag <esc>:call GetTag('1')<cr>
                 \<c-r>=Eatchar('\s')<cr>
+    for i in tags
+        call GenerateTag(i)
+    endfor
     " html tag
-    autocmd FileType php,html :inoreabbrev <buffer> thtml <esc>:call InsertTag('html','0')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> tihtml <esc>:call InsertTag('html','1')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-    " body tag
-    autocmd FileType php,html :inoreabbrev <buffer> tbody <esc>:call InsertTag('body','0')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> tibody <esc>:call InsertTag('body','1')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-    " pre tag
-    autocmd FileType php,html :inoreabbrev <buffer> tpre <esc>:call InsertTag('pre','0')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> tipre <esc>:call InsertTag('pre','1')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-    " head tag
-    autocmd FileType php,html :inoreabbrev <buffer> thead <esc>:call InsertTag('head','0')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> tihead <esc>:call InsertTag('head','1')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-    " title tag
-    autocmd FileType php,html :inoreabbrev <buffer> ttitle <esc>:call InsertTag('title','0')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> tititle <esc>:call InsertTag('title','1')<cr>
-                \<c-r>=Eatchar('\s')<cr>
-
-    autocmd FileType php,html :inoreabbrev <buffer> br <br>
-                \<c-r>=Eatchar('\s')<cr>
-    " submit button
-    autocmd FileType php,html :inoreabbrev <buffer> sub <input type="submit" value="search"><esc>
-                \2T"viw
-                \<c-r>=Eatchar('\s')<cr>
-    " text boxes
-    autocmd FileType php,html :inoreabbrev <buffer> tbox <input type="text" name="name"><esc>
-                \2T"viw<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> vtbox
-                \ <input type="text" name="name" value="value"><esc>
-                \:execute '/\%'.line(".").'l\("text"\)\@!"\zs\w*\.\=\w*\ze"'
-                \<cr>ngn
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> gtbox
-                \ <input type="text" name="name" size="size" maxlength="length" value="value"><esc>
-                \:execute '/\%'.line(".").'l\("text"\)\@!"\zs\w*\.\=\w*\ze"'
-                \<cr>ngn
-                \<c-r>=Eatchar('\s')<cr>
-    " text areas
-    autocmd FileType php,html :inoreabbrev <buffer> tarea
-                \ <textarea name="name", cols="width" rows="height" wrap="soft"><cr>
-                \</textarea><esc>
-                \k
-                \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
-                \<cr>ngn
-                \<c-r>=Eatchar('\s')<cr>
-    " checkboxes
-    autocmd filetype php,html :inoreabbrev <buffer> cbox
-                \ <input type="checkbox" name="name" value="on" checked="checked"><esc>
-                \:execute '/\%'.line(".").'l\("checkbox"\)\@!"\zs\w*\.\=\w*\ze"'
-                \<cr>ngn
-                \<c-r>=Eatchar('\s')<cr>
-    " radio buttons
-    autocmd filetype php,html :inoreabbrev <buffer> rdio
-                \ <input type="radio" name="name" value="value"><esc>
-                \:execute '/\%'.line(".").'l\("radio"\)\@!"\zs\w*\.\=\w*\ze"'
-                \<cr>ngn
-                \<c-r>=Eatchar('\s')<cr>
-    " hidden fields
-    autocmd filetype php,html :inoreabbrev <buffer> hfield
-                \ <input type="hidden" name="name" value="value"><esc>
-                \:execute '/\%'.line(".").'l\("hidden"\)\@!"\zs\w*\.\=\w*\ze"'
-                \<cr>ngn
-                \<c-r>=Eatchar('\s')<cr>
-    " select
-    autocmd filetype php,html :inoreabbrev <buffer> sele
-                \ <select name="name" size="size" multiple="multiple"><cr></select><esc>
-                \k
-                \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
-                \<cr>ngn
-                \<c-r>=Eatchar('\s')<cr>
-    " option
-    autocmd filetype php,html :inoreabbrev <buffer> opt
-                \ <option value="value"></option><esc>
-                \:execute '/\%'.line(".").'l"\zsvalue\ze"'
-                \<cr>ngn
-                \<c-r>=Eatchar('\s')<cr>
-    " forms
-    autocmd FileType php,html :inoreabbrev <buffer> formm
-                \ <form method="post" action="dummy.php"><cr></form><esc>
-                \k
-                \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
-                \<cr>ngn
-                \<c-r>=Eatchar('\s')<cr>
-    " labels
-    autocmd FileType php,html :inoreabbrev <buffer> inlbl
-                \ <label></label><esc>
-                \T<hi
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html :inoreabbrev <buffer> lbl
-                \ <label><cr></label><esc>
-                \O
-                \<c-r>=Eatchar('\s')<cr>
+"   autocmd FileType php,html :inoreabbrev <buffer> thtml <esc>:call InsertTag('html','0',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"   autocmd FileType php,html :inoreabbrev <buffer> tihtml <esc>:call InsertTag('html','1',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"   " body tag
+"   autocmd FileType php,html :inoreabbrev <buffer> tbody <esc>:call InsertTag('body','0',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"   autocmd FileType php,html :inoreabbrev <buffer> tibody <esc>:call InsertTag('body','1',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"   " pre tag
+"   autocmd FileType php,html :inoreabbrev <buffer> tpre <esc>:call InsertTag('pre','0',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"   autocmd FileType php,html :inoreabbrev <buffer> tipre <esc>:call InsertTag('pre','1',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"   " head tag
+"   autocmd FileType php,html :inoreabbrev <buffer> thead <esc>:call InsertTag('head','0',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"   autocmd FileType php,html :inoreabbrev <buffer> tihead <esc>:call InsertTag('head','1',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"   " title tag
+"   autocmd FileType php,html :inoreabbrev <buffer> ttitle <esc>:call InsertTag('title','0',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"   autocmd FileType php,html :inoreabbrev <buffer> tititle <esc>:call InsertTag('title','1',{})<cr>
+"               \<c-r>=Eatchar('\s')<cr>
+"
+"   autocmd FileType php,html :inoreabbrev <buffer> br <br>
+"               \<c-r>=Eatchar('\s')<cr>
+"   "
+"   " input tags
+"   "
+"   " Genreal input
+"   autocmd FileType php,html :inoreabbrev <buffer> tin <input type="type" value="search"><esc>
+"               \:execute '/\%'.line(".").'l\(""\)\@!"\zs\w*\.\=\w*\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   " submit button
+"   autocmd FileType php,html :inoreabbrev <buffer> tsub <input type="submit" value="search"><esc>
+"               \2T"viw
+"               \<c-r>=Eatchar('\s')<cr>
+"   " text boxes
+"   autocmd FileType php,html :inoreabbrev <buffer> ttext <input type="text" name="name"><esc>
+"               \2T"viw<c-r>=Eatchar('\s')<cr>
+"   autocmd FileType php,html :inoreabbrev <buffer> vttext
+"               \ <input type="text" name="name" value="value"><esc>
+"               \:execute '/\%'.line(".").'l\("text"\)\@!"\zs\w*\.\=\w*\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   autocmd FileType php,html :inoreabbrev <buffer> gttext
+"               \ <input type="text" name="name" size="size" maxlength="length" value="value"><esc>
+"               \:execute '/\%'.line(".").'l\("text"\)\@!"\zs\w*\.\=\w*\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   " text areas
+"   autocmd FileType php,html :inoreabbrev <buffer> tarea
+"               \ <textarea name="name", cols="width" rows="height" wrap="soft"><cr>
+"               \</textarea><esc>
+"               \k
+"               \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   " checkboxes
+"   autocmd filetype php,html :inoreabbrev <buffer> tcbox
+"               \ <input type="checkbox" name="name" value="on" checked="checked"><esc>
+"               \:execute '/\%'.line(".").'l\("checkbox"\)\@!"\zs\w*\.\=\w*\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   " radio buttons
+"   autocmd filetype php,html :inoreabbrev <buffer> tradio
+"               \ <input type="radio" name="name" value="value"><esc>
+"               \:execute '/\%'.line(".").'l\("radio"\)\@!"\zs\w*\.\=\w*\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   " hidden fields
+"   autocmd filetype php,html :inoreabbrev <buffer> thidden
+"               \ <input type="hidden" name="name" value="value"><esc>
+"               \:execute '/\%'.line(".").'l\("hidden"\)\@!"\zs\w*\.\=\w*\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   " select
+"   autocmd filetype php,html :inoreabbrev <buffer> tselect
+"               \ <select name="name" size="size" multiple="multiple"><cr></select><esc>
+"               \k
+"               \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   " option
+"   autocmd filetype php,html :inoreabbrev <buffer> toption
+"               \ <option value="value"></option><esc>
+"               \:execute '/\%'.line(".").'l"\zsvalue\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   " forms tag
+"   autocmd FileType php,html :inoreabbrev <buffer> tform
+"               \ <form method="post" action="dummy.php"><cr></form><esc>
+"               \k
+"               \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
+"               \<cr>ngn
+"               \<c-r>=Eatchar('\s')<cr>
+"   " labels tag
+"   autocmd FileType php,html :inoreabbrev <buffer> itlbl
+"               \ <label></label><esc>
+"               \T<hi
+"               \<c-r>=Eatchar('\s')<cr>
+"   autocmd FileType php,html :inoreabbrev <buffer> tlbl
+"               \ <label><cr></label><esc>
+"               \O
+"               \<c-r>=Eatchar('\s')<cr>
 augroup END
 "}}}
 
