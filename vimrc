@@ -98,7 +98,7 @@ nnoremap - ddp
 " Move line up 1 row
 nnoremap _ ddkP
 " Remove a line
-nnoremap \ dd
+"nnoremap \ dd
 " Uppercase word for constant declarations
 nnoremap <c-u> viwUw
 inoremap <c-u> <esc>viwUA
@@ -167,7 +167,7 @@ augroup file_layout
     autocmd!
     " html filetype
     " Reindent prior to saving/reading
-    autocmd BufWritePre,BufRead *.html :normal gg=G
+    " autocmd BufWritePre,BufRead *.html :normal gg=G
     " Set no wrap prior to saving/reading
     autocmd BufWritePre,BufRead *.html setlocal nowrap
 augroup END
