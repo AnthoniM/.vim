@@ -847,6 +847,16 @@ colorscheme Tomorrow-Night
 "call pathogen#runtime_append_all_bundles() " use pathogen
 
 "
+" Tern
+"
+
+"enable keyboard shortcuts
+let g:term_map_keys=1
+"show argument hints
+let g:tern_show_argument_hints='on_hold'
+
+
+"
 " Autogroups
 "
 augroup configgroup
@@ -856,6 +866,7 @@ augroup configgroup
     autocmd FileType java setlocal list
     autocmd FileType java setlocal listchars=tab:+\ ,eol:-
     autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+    autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
     autocmd FileType php setlocal expandtab
     autocmd FileType php setlocal list
     autocmd FileType php setlocal listchars=tab:+\ ,eol:-
