@@ -55,8 +55,8 @@ let g:vimfiler_as_default_explorer = 1
 "
 " Show ASCII/Unicode values in the status line
 "
-"set statusline=%<%f%h%m%r%=%b\ 0x%B\ \ %l,%c%V\ %P
-"set laststatus=2
+set statusline=%<%f%h%m%r%=%b\ 0x%B\ \ %l,%c%V\ %P
+set laststatus=2
 
 " recommended setup for syntastic
 "set statusline+=%#warningmsg#
@@ -756,11 +756,6 @@ syntax enable " enable syntax processing
 nnoremap <silent> <F7> "<Esc>:silent setlocal spell! spelllang=en<CR>"
 nnoremap <silent> <F6> "<Esc>:silent setlocal spell! spelllang=fr<CR>"
 
-"
-" Show ASCII/Unicode values in the status line
-"
-set statusline=%<%f%h%m%r%=%b\ 0x%B\ \ %l,%c%V\ %P
-set laststatus=2
 
 "
 " Space & Tabs
@@ -840,6 +835,9 @@ let php_htmlInStrings = 1
 
 " ignore case unless search with capital letters
 set smartcase
+
+"set default colorscheme
+colorscheme Tomorrow-Night
 
 "
 " Launch Config
