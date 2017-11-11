@@ -650,6 +650,79 @@ augroup filetype_php
     autocmd FileType php :inoreabbrev <buffer> func function ()<cr>{<cr>}<esc>kk0t)i<c-r>=Eatchar('\s')<cr>
     " return
     autocmd filetype php :inoreabbrev <buffer> ret return ;<left>
+    " setcookie
+    autocmd filetype php :inoreabbrev <buffer> setcookie setcookie(name, value, expire, path, domain, secure, httponly);<esc>
+                \:execute '/\%'.line(".").'l\v(\(\|,\s)\zs\w+\ze(,\|\);)'<cr>
+                \ngn
+                \<c-r>=Eatchar('\s')<cr>
+    " mysqli
+    autocmd filetype php :inoreabbrev <buffer> mysqli mysqli(hostname, username, password, database);<esc>
+                \:execute '/\%'.line(".").'l\v(\(\|,\s)\zs\w+\ze(,\|\);)'<cr>
+                \ngn
+                \<c-r>=Eatchar('\s')<cr>
+
+augroup END
+"}}}
+
+" JAVASCRIPT file settings
+"{{{
+augroup filetype_javascript
+    autocmd!
+    " with
+    autocmd FileType javascript,html :inoreabbrev <buffer> swith with ()<cr>{<cr>}<esc>
+                \2k$i
+                \<c-r>=Eatchar('\s')<cr>
+    " if
+    autocmd FileType javascript,html :inoreabbrev <buffer> sif if ()<cr>{<cr>}<esc>2k$i
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType javascript,html :inoreabbrev <buffer> isif if () <esc>2ha
+                \<c-r>=Eatchar('\s')<cr>
+    " else
+    autocmd FileType javascript,html :inoreabbrev <buffer> sel else<cr>{<cr>}<esc>O
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType javascript,html :inoreabbrev <buffer> isel else <esc>i
+                \<c-r>=Eatchar('\s')<cr>
+    " else if
+    autocmd FileType javascript,html :inoreabbrev <buffer> selif else if ()<cr>{<cr>}<esc>2k$i
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType javascript,html :inoreabbrev <buffer> iselif else if () <esc>hi
+                \<c-r>=Eatchar('\s')<cr>
+    " while
+    autocmd filetype javascript,html :inoreabbrev <buffer> swhile while ()<cr>{<cr>}<esc>2k$i
+                \<c-r>=Eatchar('\s')<cr>
+    " do...while
+    autocmd filetype javascript,html :inoreabbrev <buffer> sdowhile do<cr>{<cr>} while ()<left>
+                \<c-r>=Eatchar('\s')<cr>
+    " for
+    autocmd filetype javascript,html :inoreabbrev <buffer> sfor for (i = 0; i < 5; ++i)<cr>{<cr>}<esc>
+                \2k
+                \:execute '/\%'.line(".").'l\v(i \= 0\ze;\|i \< 5\ze;\|\+\+i\ze\))'<cr>
+                \gn
+                \<c-r>=Eatchar('\s')<cr>
+    " return
+    autocmd FileType javascript,html :inoreabbrev <buffer> ret return
+    " functions
+    autocmd FileType javascript,html :inoreabbrev <buffer> sfunction function ()<cr>{<cr>}<esc>2k$hi
+                \<c-r>=Eatchar('\s')<cr>
+    autocmd FileType javascript,html :inoreabbrev <buffer> isfunction function(){}<esc>2hi
+                \<c-r>=Eatchar('\s')<cr>
+    " switch
+    autocmd FileType javascript,html :inoreabbrev <buffer> sswitch switch ()<cr>{<cr>}<esc>2k$i
+                \<c-r>=Eatchar('\s')<cr>
+    " case
+    autocmd FileType javascript,html :inoreabbrev <buffer> scase case :<cr>break<esc>k$i
+                \<c-r>=Eatchar('\s')<cr>
+    " default
+    autocmd FileType javascript,html :inoreabbrev <buffer> sdefault default:<cr>break<esc>k$i
+                \<c-r>=Eatchar('\s')<cr>
+    " ternary ?
+    autocmd FileType javascript,html :inoreabbrev <buffer> sq cond ? yes : non<esc>16h
+                \:execute '/\%'.line(".").'l\v(cond\ze \?\|\? \zsyes\|: \zsnon)'<cr>
+                \gn
+                \<c-r>=Eatchar('\s')<cr>
+    " semicolon
+    autocmd FileType javascript,html,php :nnoremap <buffer> <localleader>; mqA;<esc>`q
+"   autocmd BufRead *.js set filetype=htmlm4
 augroup END
 "}}}
 
