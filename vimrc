@@ -621,14 +621,16 @@ augroup END
 augroup filetype_php
     autocmd!
     " html heredoc
-    autocmd FileType php :inoreabbrev <buffer> htmll echo <<<_HTML<cr><bs>_HTML;<esc>O
+    autocmd FileType php :inoreabbrev <buffer> htmlh <esc>ciwecho <<<_HTML<cr><esc>ciw_HTML;<esc>O
+                \<c-r>=Eatchar('\s')<cr>
     " SQL heredoc
-    autocmd FileType php :inoreabbrev <buffer> sqll echo <<<_SQL<cr>_SQL;<esc>O
+    autocmd FileType php :inoreabbrev <buffer> sqlh <esc>ciwecho <<<_SQL<cr><esc>ciw_SQL;<esc>O
+                \<c-r>=Eatchar('\s')<cr>
     " if
     autocmd filetype php :inoreabbrev <buffer> iff if ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
     autocmd filetype php :inoreabbrev <buffer> inif if () ;<esc>T)hi<c-r>=Eatchar('\s')<cr>
     " else
-    autocmd FileType php :inoreabbrev <buffer> el else<cr>{<cr>}<esc>kkA
+    autocmd FileType php :inoreabbrev <buffer> el else<cr>{<cr>}<esc>O
     autocmd FileType php :inoreabbrev <buffer> inel else ;<left>
     " else if
     autocmd FileType php :inoreabbrev <buffer> elif elseif ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
