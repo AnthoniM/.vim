@@ -1,3 +1,82 @@
+if &compatible
+    set nocompatible
+endif
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" Let Vundle manage itself
+Plugin 'VundleVim/Vundle.vim'
+
+"Plugins
+"Tern
+Plugin 'ternjs/tern_for_vim'
+"YouCompleteMe
+Plugin 'Valloric/YouCompleteMe'
+"fzf : fuzzy finder
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plugin 'junegunn/fzf.vim'
+"syntastic : syntax errors
+Plugin 'vim-syntastic/syntastic'
+"snipmate
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+" Optional:
+Plugin 'honza/vim-snippets'
+"vimfiler depends on unite.vim
+Plugin 'Shougo/vimfiler.vim'
+"unite.vim
+Plugin 'Shougo/unite.vim'
+"comment
+Plugin 'tpope/vim-commentary'
+
+" Not shure I like it !
+" Collection of language packs for Vim
+"Plugin 'sheerun/vim-polyglot'
+"statusbar plugin
+"Plugin 'powerline/powerline'
+
+" TODO:
+" extended search and replace
+"Plugin 'tpope/vim-abolish'
+
+"color scheme
+Plugin 'Ardakilic/vim-tomorrow-night-theme'
+call vundle#end()
+filetype plugin indent on
+
+"to prevent clash with youcompleteme, change snippet trigger
+imap <C-J> <Plug>snipMateNextOrTrigger
+smap <C-J> <Plug>snipMateNextOrTrigger
+
+" set vimfiler as the default explorer
+let g:vimfiler_as_default_explorer = 1
+
+"
+" Show ASCII/Unicode values in the status line
+"
+"set statusline=%<%f%h%m%r%=%b\ 0x%B\ \ %l,%c%V\ %P
+"set laststatus=2
+
+" recommended setup for syntastic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
 "echo ">^.^<"
 "command MAKE execute "w|!bash ./gen_pdf.sh"
 "command SHOW execute "!evince %:r.pdf &"
