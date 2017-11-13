@@ -630,33 +630,33 @@ augroup END
 augroup filetype_php
     autocmd!
     " html heredoc
-    autocmd FileType php :inoreabbrev <buffer> htmlh <esc>ciwecho <<<_HTML<cr><esc>ciw_HTML;<esc>O
+    autocmd FileType php :inoreabbrev <buffer> hhtml <esc>ciwecho <<<_HTML<cr><esc>ciw_HTML;<esc>O
                 \<c-r>=Eatchar('\s')<cr>
     " SQL heredoc
-    autocmd FileType php :inoreabbrev <buffer> sqlh <esc>ciwecho <<<_SQL<cr><esc>ciw_SQL;<esc>O
+    autocmd FileType php :inoreabbrev <buffer> hsql <esc>ciwecho <<<_SQL<cr><esc>ciw_SQL;<esc>O
                 \<c-r>=Eatchar('\s')<cr>
     " if
-    autocmd filetype php :inoreabbrev <buffer> iff if ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
-    autocmd filetype php :inoreabbrev <buffer> inif if () ;<esc>T)hi<c-r>=Eatchar('\s')<cr>
+    autocmd filetype php :inoreabbrev <buffer> sif if ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    autocmd filetype php :inoreabbrev <buffer> isif if () ;<esc>T)hi<c-r>=Eatchar('\s')<cr>
     " else
-    autocmd FileType php :inoreabbrev <buffer> el else<cr>{<cr>}<esc>O
-    autocmd FileType php :inoreabbrev <buffer> inel else ;<left>
+    autocmd FileType php :inoreabbrev <buffer> sel else<cr>{<cr>}<esc>O
+    autocmd FileType php :inoreabbrev <buffer> isel else ;<left>
     " else if
-    autocmd FileType php :inoreabbrev <buffer> elif elseif ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php :inoreabbrev <buffer> selif elseif ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
     " for
-    autocmd FileType php :inoreabbrev <buffer> forr for (;;)<cr>{<cr>}<esc>kk0t)%a<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php :inoreabbrev <buffer> sfor for (;;)<cr>{<cr>}<esc>kk0t)%a<c-r>=Eatchar('\s')<cr>
     " foreach
-    autocmd FileType php :inoreabbrev <buffer> fore foreach ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php :inoreabbrev <buffer> infore foreach
+    autocmd FileType php :inoreabbrev <buffer> sfore foreach ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php :inoreabbrev <buffer> isfore foreach
                 \ () ;<esc>
                 \T)hi
                 \<c-r>=Eatchar('\s')<cr>
     " while
-    autocmd FileType php :inoreabbrev <buffer> whil while ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php :inoreabbrev <buffer> swhile while ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
     " do...while
-    autocmd FileType php :inoreabbrev <buffer> dow do{<cr>}while()<esc>i<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php :inoreabbrev <buffer> sdo do{<cr>}while()<esc>i<c-r>=Eatchar('\s')<cr>
     " functions
-    autocmd FileType php :inoreabbrev <buffer> func function ()<cr>{<cr>}<esc>kk0t)i<c-r>=Eatchar('\s')<cr>
+    autocmd FileType php :inoreabbrev <buffer> sfunc function ()<cr>{<cr>}<esc>kk0t)i<c-r>=Eatchar('\s')<cr>
     " Associative arrays
     let s:associative_arrays = ['post',
                                \'get',
