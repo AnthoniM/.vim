@@ -38,16 +38,19 @@ function! s:Surround(tag, family, type)
         let cursor = getcurpos()
         execute "normal! v`]y"
     endif
-    let body = @@
+    let len_body = len(@@)
+    let body = escape(@@, s:special_char)
 
     " Generate regex
     let sep = ''
-    let field = '('
+    let field = '\('
     let len_delim = {'left' : 0, 'right' : 0}
     for i in range(len(a:family))
         let sibling = a:family[i]
-        let field .= sep.sibling['left'].@@.sibling['right']
-        let sep = '|'
+        let left = escape(sibling['left'], s:special_char)
+        let right = escape(sibling['right'], s:special_char)
+        let field .= sep.left.body.right
+        let sep = '\|'
         for j in ['left', 'right']
             if has_key(sibling, j)
                 " Record the longest delimiter size for each sides
@@ -57,7 +60,7 @@ function! s:Surround(tag, family, type)
             endif
         endfor
     endfor
-    let field .= '|'.@@.')'
+    let field .= '\|'.body.'\)'
 
     " Visually select with padding
     if a:type ==# 'v'
@@ -65,22 +68,22 @@ function! s:Surround(tag, family, type)
     elseif a:type ==# 'char'
         execute "normal! `[v`]".len_delim['right']."lo".len_delim['left']."hy"
     endif
-    let expr = @@
+    let expr = escape(@@, s:special_char)
     
-    " Place or replace tags if not already present
-    if match(expr,a:tag['left'].body.a:tag['right'])<0
-        "echom "Insert tags"
-        execute 's/\%V\v' 
-                \.field.'/'.a:tag['left'].body.a:tag['right'].'/'
+    " place, replace or remove tags
+    let ltag = escape(a:tag['left'], s:special_char)
+    let rtag = escape(a:tag['right'], s:special_char)
+    if match(expr, ltag.body.rtag)<0
+        " Surround
+        execute 's/\%V'.field.'/'.ltag.body.rtag.'/'
         " Return to normal mode
         execute "normal! \<esc>"
         " Move cursor after the left tag
         let cursor[2] += len(a:tag['left'])
         let cursor[4] += len(a:tag['left'])
     else
-        "echom "Remove tags"
-        execute 's/\%V\v' 
-                \.expr.'/'.body.'/'
+        " Unsurround
+        execute 's/\%V'.expr.'/'.body.'/'
     endif
     let @@ = saved_unnamed_register
     call setpos('.', cursor)
