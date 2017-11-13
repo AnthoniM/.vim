@@ -22,7 +22,7 @@ Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 " Optional:
-Plugin 'honza/vim-snippets'
+Plugin 'AnthoniM/vim-snippets'
 "vimfiler depends on unite.vim
 Plugin 'Shougo/vimfiler.vim'
 "unite.vim
