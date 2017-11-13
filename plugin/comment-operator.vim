@@ -4,38 +4,52 @@ nnoremap <localleader>mm :call <SID>CommentOperator('',1)<cr>
 nnoremap <localleader>m :set operatorfunc=<SID>Comment<cr>g@
 vnoremap <localleader>m :<c-u>call <SID>Comment(visualmode())<cr>
 
-let s:specialcharacters = '%#'
+let s:specialcharacters = '/'
 
 function! s:Comment(type)
     call s:CommentOperator(a:type, 0)
 endfunction
 
+function! s:isLineCommented(line)
+    let left = b:CommenterDelims['left']
+    let right = b:CommenterDelims['right']
+    let match = search('\%'.a:line.'l^\s*'.escape(left, s:specialcharacters))
+"               \.'.*'.escape(right, s:specialcharacters).'$')
+    return match
+endfunction
+
+function! s:unComment(type)
+    let range = s:GetRange(a:type)
+    let left = b:CommenterDelims['left']
+    let right = b:CommenterDelims['right']
+    execute range.'s/^\s*\zs'.escape(left, s:specialcharacters).'\(\s\{0,'.len(left).'\}\)/\1\1/'
+endfunction
+
+function! s:doComment(type,indent)
+    let range = s:GetRange(a:type)
+    let left = b:CommenterDelims['left']
+    let right = b:CommenterDelims['right']
+    if !a:indent
+        " Insert comment at the beginning of the line.
+        " Don't move text if possible
+        execute range.'s/^\s\{0,'.len(left).'\}\ze/'.escape(left, s:specialcharacters).'/'
+    else
+        " Insert comment at indentation.
+        " Always move text.
+        execute range.'s/^\(\s*\)\ze/\1'.escape(left, s:specialcharacters).'/'
+    endif
+endfunction
+
 function! s:CommentOperator(type, indent)
     let saved_cursor = getcurpos()
     let curline = saved_cursor[1]
-    let range = s:GetRange(a:type)
     " NOTE: For now it only works if we comment with only a left delimiter.
-    let left = b:CommenterDelims['left']
-    " Move the cursor one line up so that a match can occur on the previous line. 
-    let match = search('\%'.curline.'l\v^\s*'.escape(left, s:specialcharacters))
     " If the current line is commented uncomment the whole block.
     " Otherwise comment the whole block.
-    let left = escape(left, '/')
-    if match
-        echom range.'s/\v^\s*\zs'.escape(left, s:specialcharacters).'(\s?)/\1\1/'
-        execute range.'s/\v^\s*\zs'.escape(left, s:specialcharacters).'(\s?)/\1\1/'
+    if s:isLineCommented(curline)
+        call s:unComment(a:type)
     else
-        if !a:indent
-            " Insert comment at the beginning of the line.
-            " Don't move text if possible
-            echom range.'s/\v^\s?\ze/'.escape(left, s:specialcharacters).'/'
-            execute range.'s/\v^\s?\ze/'.escape(left, s:specialcharacters).'/'
-        else
-            " Insert comment at indentation.
-            " Always move text.
-            echom range.'s/\v^(\s*)\ze/\1'.escape(left, s:specialcharacters).'/'
-            execute range.'s/\v^(\s*)\ze/\1'.escape(left, s:specialcharacters).'/'
-        endif
+        call s:doComment(a:type, a:indent)
     endif
     noh
     call setpos('.', saved_cursor)
@@ -169,9 +183,7 @@ let s:delimiterMap = {
     \ 'hercules': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' },
     \ 'hog': { 'left': '#' },
     \ 'hostsaccess': { 'left': '#' },
-    \ 'htmlcheetah': { 'left': '##' },
-    \ 'htmldjango': { 'left': '<!--','right': '-->', 'leftAlt': '{#', 'rightAlt': '#}' },
-    \ 'htmlos': { 'left': '#', 'right': '/#' },
+    \ 'html': { 'left': '//' },
     \ 'ia64': { 'left': '#' },
     \ 'icon': { 'left': '#' },
     \ 'idlang': { 'left': ';' },
