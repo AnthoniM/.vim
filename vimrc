@@ -368,6 +368,7 @@ augroup filetype_html
 
     let tags =  [["html","none",{},"2"],
                 \["body","none",{},"2"],
+                \["font","none",{'color':'red','size':1},"2"],
                 \["hr","none",{},"3"],
                 \["br","none",{},"3"],
                 \["pre","none",{},"2"],
@@ -393,7 +394,7 @@ augroup filetype_html
                 \["iframe","none",{"src":"url"},"2"],
                 \["a","a",{"href":"href"},"2"],
                 \["b","bold",{},"2"],
-                \["i","it",{},"2"],
+                \["i","none",{},"2"],
                 \["em","em",{},"2"],
                 \["small","none",{},"2"],
                 \["mark","none",{},"2"],
