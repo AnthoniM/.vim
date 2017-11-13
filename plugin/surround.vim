@@ -78,13 +78,23 @@ function! s:Surround(tag, family, type)
         execute 's/\%V'.field.'/'.ltag.body.rtag.'/'
         " Return to normal mode
         execute "normal! \<esc>"
-        " Move cursor after the left tag
-        let cursor[2] += len(a:tag['left'])
-        let cursor[4] += len(a:tag['left'])
+        let sign = 1
     else
         " Unsurround
         execute 's/\%V'.expr.'/'.body.'/'
+        let sign = -1
     endif
+
+    " move cursor at start of the selection
+    let cursor[2] += sign*len(a:tag['left'])
+    let cursor[4] += sign*len(a:tag['left'])
+
+    " reselect the quoted/unquoted to return to it with gv
+    call setpos('.', cursor)
+    execute "normal! zvv"
+    call cursor( cursor[1], cursor[2]+len_body-1)
+    execute "normal! \<esc>"
+
     let @@ = saved_unnamed_register
     call setpos('.', cursor)
 endfunction
