@@ -7,12 +7,26 @@ function! s:TemplateFile(filetype)
         call s:VimTemplate()
     elseif a:filetype ==# 'php'
         call s:PHPTemplate()
+    elseif a:filetype ==# 'html'
+        call s:HTMLTemplate()
     elseif a:filetype ==# 'python'
         call s:PythonTemplate()
     endif
 endfunction
 
 function! s:VimTemplate()
+endfunction
+
+function! s:HTMLTemplate()
+    let filename = expand("%:t")
+    let first_line = '<!DOCTYPE html>'
+    if (getline("1") !~ first_line)
+        execute 'normal! i'.first_line
+        execute 'normal! o'.'<!--'.filename.'-->'
+        execute 'normal! o<html>'
+        execute 'normal! o</html>'
+        execute 'normal! O'
+    endif
 endfunction
 
 function! s:PHPTemplate()
