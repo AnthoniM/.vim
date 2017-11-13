@@ -35,6 +35,7 @@ function! s:PHPTemplate()
     if (getline("1") !~ first_line)
         execute 'normal! i'.first_line
         execute 'normal! o?>'
+        execute 'normal! O'
     endif
 endfunction
 
