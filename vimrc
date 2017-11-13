@@ -83,6 +83,7 @@ let g:syntastic_check_on_wq = 0
 "command SAVE execute "w|make all"
 "command SDRAFT execute "w|make draft"
 
+nnoremap <leader>@@ :%s/\(^\s*\)\@<!\zs\s*{\ze$\n\(.*\n\)\=\(\s\+\)}/\r\3{/g<cr>
 " Leader Shortcuts
 "{{{
 let mapleader="," "leader is comma
