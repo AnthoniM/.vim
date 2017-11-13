@@ -245,6 +245,15 @@ augroup END
 
 " HTML functions
 "{{{
+
+function! InsertAssocArray(name)
+    let abbrev = "_".tolower(a:name)
+    execute "autocmd FileType php :inoreabbrev <buffer> "
+            \.abbrev
+            \." $_".toupper(a:name)."[]<left>"
+            \."<c-r>=Eatchar('\\s')<cr>"
+endfunction
+
 function! GetTag(inline)
     let name = input("Enter tag name : ")
     call InsertTag(name,a:inline)
@@ -648,6 +657,15 @@ augroup filetype_php
     autocmd FileType php :inoreabbrev <buffer> dow do{<cr>}while()<esc>i<c-r>=Eatchar('\s')<cr>
     " functions
     autocmd FileType php :inoreabbrev <buffer> func function ()<cr>{<cr>}<esc>kk0t)i<c-r>=Eatchar('\s')<cr>
+    " Associative arrays
+    let s:associative_arrays = ['post',
+                               \'get',
+                               \'session',
+                               \'server']
+    autocmd FileType php :inoreabbrev <buffer> _post $_POST[]<left><c-r>=Eatchar('\s')<cr>
+    for i in s:associative_arrays
+        call InsertAssocArray(i)
+    endfor
     " return
     autocmd filetype php :inoreabbrev <buffer> ret return ;<left>
     " setcookie
