@@ -302,7 +302,6 @@ function! InsertTag(name, inline, parameters)
                     \.begin_tag.end_tag
                     \."\<esc>T>"
     endif
-"   execute "normal! :<c-r>=Eatchar('\s')"
 
     " Set the proper insert/view state
     if insert
@@ -345,7 +344,7 @@ function! GenerateTagAbrrev(abbrev, name, inline, parameters)
     execute "autocmd FileType php,html,javascript :inoreabbrev <buffer> "
             \.tag
             \." <esc>:call InsertTag(\"".a:name."\",".a:inline.",".string(a:parameters).")"."<cr>"
-            \."<c-r>=Eatchar('\s')<cr>"
+            \."<c-r>=Eatchar('\\s')<cr>"
 endfunction
 "}}}
 
