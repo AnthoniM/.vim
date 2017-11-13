@@ -11,21 +11,21 @@ nnoremap <silent> <leader>" viw:call <SID>DoubleQuoteSurround('v')<cr>
 vnoremap <silent> <leader>" :<c-u>call <SID>DoubleQuoteSurround('v')<cr>
 "Also use <leader>c' from surround.vim to surround a more general selection
 
-let s:quote_family = [{"left" : "\'","right" : "\'"},
-                     \{"left" : "\"","right" : "\""}]
+let s:special_char = '/\'
+let s:quote_family = [{"left" : "\'", "right" : "\'"},
+                     \{"left" : "\"", "right" : "\""}]
 
 function! s:SingleQuoteSurround(type)
-    let tag = {"left" : "\'","right" : "\'"}
-    call s:Surround(tag,s:quote_family,a:type)
+    let tag = {"left" : "\'", "right" : "\'"}
+    call s:Surround(tag, s:quote_family, a:type)
 endfunction
 
 function! s:DoubleQuoteSurround(type)
-    let tag = {"left" : "\"","right" : "\""}
-    call s:Surround(tag,s:quote_family,a:type)
+    let tag = {"left" : "\"", "right" : "\""}
+    call s:Surround(tag, s:quote_family, a:type)
 endfunction
 
 function! s:Surround(tag, family, type)
-    " NOTE: Should save the visual mode to be able to highlight it again using gv.
     let saved_unnamed_register = @@
 
     " Yank the preselection for the search and save it in the unnamed register
