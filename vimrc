@@ -657,6 +657,8 @@ augroup filetype_php
     autocmd FileType php :inoreabbrev <buffer> sdo do{<cr>}while()<esc>i<c-r>=Eatchar('\s')<cr>
     " functions
     autocmd FileType php :inoreabbrev <buffer> sfunc function ()<cr>{<cr>}<esc>kk0t)i<c-r>=Eatchar('\s')<cr>
+    " isset
+    autocmd FileType php :inoreabbrev <buffer> iss isset()<left><c-r>=Eatchar('\s')<cr>
     " Associative arrays
     let s:associative_arrays = ['post',
                                \'get',
