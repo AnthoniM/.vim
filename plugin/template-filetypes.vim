@@ -11,6 +11,8 @@ function! s:TemplateFile(filetype)
         call s:HTMLTemplate()
     elseif a:filetype ==# 'python'
         call s:PythonTemplate()
+    elseif a:filetype ==# 'java'
+        call s:JAVATemplate()
     endif
 endfunction
 
@@ -22,7 +24,6 @@ function! s:HTMLTemplate()
     let first_line = '<!DOCTYPE html>'
     if (getline("1") !~ first_line)
         execute 'normal! i'.first_line
-        execute 'normal! o'.'<!--'.filename.'-->'
         execute 'normal! o<html>'
         execute 'normal! o</html>'
         execute 'normal! O'
@@ -31,8 +32,6 @@ endfunction
 
 function! s:PHPTemplate()
     let filename = expand("%:t")
-    let first_line = '<?php //'.filename
-    if (getline("1") !~ first_line)
         execute 'normal! i'.first_line
         execute 'normal! o?>'
         execute 'normal! O'
@@ -42,9 +41,18 @@ endfunction
 function! s:PythonTemplate()
     let filename = expand("%:t")
     let first_line = '#!/usr/bin/env python'
-    if (getline("1") !~ '<?php //'.filename)
         execute 'normal! i'.first_line
         execute 'normal! o'.'# -*- coding: utf-8 -*-'
+
+function! s:JAVATemplate()
+    let filename = expand("%:t")
+    let first_line = "// "
+    let fname_comment = first_line.filename
+    if (getline("1") !~ first_line)
+        execute 'normal! i'.first_line.filename."\<cr>"
+        if (getline("2") =~ '//')
+            execute 'normal! diw'
+        endif
         execute 'normal! o'
     endif
 endfunction
