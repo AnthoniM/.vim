@@ -11,7 +11,7 @@ Plugin 'VundleVim/Vundle.vim'
 "Tern
 Plugin 'ternjs/tern_for_vim'
 "YouCompleteMe
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 "fzf : fuzzy finder
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
