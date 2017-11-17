@@ -508,121 +508,13 @@ augroup filetype_html
     " define abbreviation for common tags.
     "
     " insert a general tag
-    autocmd FileType php,html,javascript :inoreabbrev <buffer> tag <esc>:call GetTag('0')<cr>
+    autocmd FileType php,html,javascript :inoreabbrev <buffer> ttag <esc>:call GetTag('0')<cr>
                 \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html,javascript :inoreabbrev <buffer> itag <esc>:call GetTag('1')<cr>
+    autocmd FileType php,html,javascript :inoreabbrev <buffer> ittag <esc>:call GetTag('1')<cr>
                 \<c-r>=Eatchar('\s')<cr>
     for i in tags
         call GenerateTag(i)
     endfor
-    " html tag
-"   autocmd FileType php,html :inoreabbrev <buffer> thtml <esc>:call InsertTag('html','0',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"   autocmd FileType php,html :inoreabbrev <buffer> tihtml <esc>:call InsertTag('html','1',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"   " body tag
-"   autocmd FileType php,html :inoreabbrev <buffer> tbody <esc>:call InsertTag('body','0',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"   autocmd FileType php,html :inoreabbrev <buffer> tibody <esc>:call InsertTag('body','1',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"   " pre tag
-"   autocmd FileType php,html :inoreabbrev <buffer> tpre <esc>:call InsertTag('pre','0',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"   autocmd FileType php,html :inoreabbrev <buffer> tipre <esc>:call InsertTag('pre','1',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"   " head tag
-"   autocmd FileType php,html :inoreabbrev <buffer> thead <esc>:call InsertTag('head','0',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"   autocmd FileType php,html :inoreabbrev <buffer> tihead <esc>:call InsertTag('head','1',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"   " title tag
-"   autocmd FileType php,html :inoreabbrev <buffer> ttitle <esc>:call InsertTag('title','0',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"   autocmd FileType php,html :inoreabbrev <buffer> tititle <esc>:call InsertTag('title','1',{})<cr>
-"               \<c-r>=Eatchar('\s')<cr>
-"
-"   autocmd FileType php,html :inoreabbrev <buffer> br <br>
-"               \<c-r>=Eatchar('\s')<cr>
-"   "
-"   " input tags
-"   "
-"   " Genreal input
-"   autocmd FileType php,html :inoreabbrev <buffer> tin <input type="type" value="search"><esc>
-"               \:execute '/\%'.line(".").'l\(""\)\@!"\zs\w*\.\=\w*\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   " submit button
-"   autocmd FileType php,html :inoreabbrev <buffer> tsub <input type="submit" value="search"><esc>
-"               \2T"viw
-"               \<c-r>=Eatchar('\s')<cr>
-"   " text boxes
-"   autocmd FileType php,html :inoreabbrev <buffer> ttext <input type="text" name="name"><esc>
-"               \2T"viw<c-r>=Eatchar('\s')<cr>
-"   autocmd FileType php,html :inoreabbrev <buffer> vttext
-"               \ <input type="text" name="name" value="value"><esc>
-"               \:execute '/\%'.line(".").'l\("text"\)\@!"\zs\w*\.\=\w*\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   autocmd FileType php,html :inoreabbrev <buffer> gttext
-"               \ <input type="text" name="name" size="size" maxlength="length" value="value"><esc>
-"               \:execute '/\%'.line(".").'l\("text"\)\@!"\zs\w*\.\=\w*\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   " text areas
-"   autocmd FileType php,html :inoreabbrev <buffer> tarea
-"               \ <textarea name="name", cols="width" rows="height" wrap="soft"><cr>
-"               \</textarea><esc>
-"               \k
-"               \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   " checkboxes
-"   autocmd filetype php,html :inoreabbrev <buffer> tcbox
-"               \ <input type="checkbox" name="name" value="on" checked="checked"><esc>
-"               \:execute '/\%'.line(".").'l\("checkbox"\)\@!"\zs\w*\.\=\w*\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   " radio buttons
-"   autocmd filetype php,html :inoreabbrev <buffer> tradio
-"               \ <input type="radio" name="name" value="value"><esc>
-"               \:execute '/\%'.line(".").'l\("radio"\)\@!"\zs\w*\.\=\w*\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   " hidden fields
-"   autocmd filetype php,html :inoreabbrev <buffer> thidden
-"               \ <input type="hidden" name="name" value="value"><esc>
-"               \:execute '/\%'.line(".").'l\("hidden"\)\@!"\zs\w*\.\=\w*\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   " select
-"   autocmd filetype php,html :inoreabbrev <buffer> tselect
-"               \ <select name="name" size="size" multiple="multiple"><cr></select><esc>
-"               \k
-"               \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   " option
-"   autocmd filetype php,html :inoreabbrev <buffer> toption
-"               \ <option value="value"></option><esc>
-"               \:execute '/\%'.line(".").'l"\zsvalue\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   " forms tag
-"   autocmd FileType php,html :inoreabbrev <buffer> tform
-"               \ <form method="post" action="dummy.php"><cr></form><esc>
-"               \k
-"               \:execute '/\%'.line(".").'l"\zs\w*\.\=\w*\ze"'
-"               \<cr>ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"   " labels tag
-"   autocmd FileType php,html :inoreabbrev <buffer> itlbl
-"               \ <label></label><esc>
-"               \T<hi
-"               \<c-r>=Eatchar('\s')<cr>
-"   autocmd FileType php,html :inoreabbrev <buffer> tlbl
-"               \ <label><cr></label><esc>
-"               \O
-"               \<c-r>=Eatchar('\s')<cr>
 augroup END
 "}}}
 
