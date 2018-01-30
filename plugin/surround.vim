@@ -5,6 +5,8 @@ nnoremap <leader>c" :set operatorfunc=<SID>DoubleQuoteSurround<cr>g@
 "vnoremap <leader>c" :<c-u>call <SID>DoubleQuoteSurround(visualmode())<cr>
 
 "Puts word between single/double quotation marks
+nnoremap <silent> <leader>cq viw:call <SID>BackAccentSurround('v')<cr>
+vnoremap <silent> <leader>cq :<c-u>call <SID>BackAccentSurround('v')<cr>
 nnoremap <silent> <leader>' viw:call <SID>SingleQuoteSurround('v')<cr>
 vnoremap <silent> <leader>' :<c-u>call <SID>SingleQuoteSurround('v')<cr>
 nnoremap <silent> <leader>" viw:call <SID>DoubleQuoteSurround('v')<cr>
@@ -13,7 +15,13 @@ vnoremap <silent> <leader>" :<c-u>call <SID>DoubleQuoteSurround('v')<cr>
 
 let s:special_char = '/\'
 let s:quote_family = [{"left" : "\'", "right" : "\'"},
+                     \{"left" : "`", "right" : "`"},
                      \{"left" : "\"", "right" : "\""}]
+
+function! s:BackAccentSurround(type)
+    let tag = {"left" : "`", "right" : "`"}
+    call s:Surround(tag, s:quote_family, a:type)
+endfunction
 
 function! s:SingleQuoteSurround(type)
     let tag = {"left" : "\'", "right" : "\'"}
