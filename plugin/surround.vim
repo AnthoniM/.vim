@@ -3,17 +3,26 @@ nnoremap <leader>c' :set operatorfunc=<SID>SingleQuoteSurround<cr>g@
 "vnoremap <leader>c' :<c-u>call <SID>SingleQuoteSurround(visualmode())<cr>
 nnoremap <leader>c" :set operatorfunc=<SID>DoubleQuoteSurround<cr>g@
 "vnoremap <leader>c" :<c-u>call <SID>DoubleQuoteSurround(visualmode())<cr>
+nnoremap <leader>c* :set operatorfunc=<SID>StarSurround<cr>g@
 
 "Puts word between single/double quotation marks
 nnoremap <silent> <leader>' viw:call <SID>SingleQuoteSurround('v')<cr>
 vnoremap <silent> <leader>' :<c-u>call <SID>SingleQuoteSurround('v')<cr>
 nnoremap <silent> <leader>" viw:call <SID>DoubleQuoteSurround('v')<cr>
 vnoremap <silent> <leader>" :<c-u>call <SID>DoubleQuoteSurround('v')<cr>
+nnoremap <silent> <leader>* viw:call <SID>StarSurround('v')<cr>
+vnoremap <silent> <leader>* :<c-u>call <SID>StarSurround('v')<cr>
 "Also use <leader>c' from surround.vim to surround a more general selection
 
 let s:special_char = '/\'
 let s:quote_family = [{"left" : "\'", "right" : "\'"},
-                     \{"left" : "\"", "right" : "\""}]
+                     \{"left" : "\"", "right" : "\""},
+                     \{"left" : "*", "right" : "*"}]
+
+function! s:StarSurround(type)
+    let tag = {"left" : "*", "right" : "*"}
+    call s:Surround(tag, s:quote_family, a:type)
+endfunction
 
 function! s:SingleQuoteSurround(type)
     let tag = {"left" : "\'", "right" : "\'"}
