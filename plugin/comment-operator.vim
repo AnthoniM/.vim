@@ -10,6 +10,11 @@ function! s:Comment(type)
     call s:CommentOperator(a:type, 0)
 endfunction
 
+function! s:getIndentation(line)
+    let match = match(getline(a:line),'\S')
+    return match
+endfunction
+
 function! s:isLineCommented(line)
     let left = b:CommenterDelims['left']
     let right = b:CommenterDelims['right']
@@ -22,21 +27,27 @@ function! s:unComment(type)
     let range = s:GetRange(a:type)
     let left = b:CommenterDelims['left']
     let right = b:CommenterDelims['right']
-    execute range.'s/^\s*\zs'.escape(left, s:specialcharacters).'\(\s\{0,'.len(left).'\}\)/\1\1/'
+    "execute range.'s/^\s*\zs'.escape(left, s:specialcharacters).'\(\s\{0,'.len(left).'\}\)/\1\1/'
+    execute range.'s/^\s*\zs'.escape(left, s:specialcharacters).'\(\s\{0,'.len(left).'\}\)'.'\(.*\)'.escape(right, s:specialcharacters).'$/\1\1\2/'
 endfunction
 
 function! s:doComment(type,indent)
     let range = s:GetRange(a:type)
     let left = b:CommenterDelims['left']
     let right = b:CommenterDelims['right']
+    "TODO : specify indent for each line which the indent is smaller then the
+    "left delimiter.
+    "let lineIndent = s:getIndentation()
     if !a:indent
         " Insert comment at the beginning of the line.
         " Don't move text if possible
-        execute range.'s/^\s\{0,'.len(left).'\}\ze/'.escape(left, s:specialcharacters).'/'
+        execute range.'s/\(^\s\{0,'.len(left).'\}\)\(.*$\)/'.escape(left, s:specialcharacters).'\2'.escape(right, s:specialcharacters).'/'
+"       execute range.'s/\(^\s\{0,'.len(left).'\}\)\(.*$\)/'.escape(left, s:specialcharacters).'/'
     else
         " Insert comment at indentation.
         " Always move text.
-        execute range.'s/^\(\s*\)\ze/\1'.escape(left, s:specialcharacters).'/'
+        "execute range.'s/^\(\s*\)\ze/\1'.escape(left, s:specialcharacters).'/'
+        execute range.'s/^\(\s*\)\(.*$\)/\1'.escape(left, s:specialcharacters).'\2'.escape(right, s:specialcharacters).'/'
     endif
 endfunction
 
