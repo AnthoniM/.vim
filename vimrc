@@ -12,11 +12,14 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'ternjs/tern_for_vim'
 "YouCompleteMe
 "Plugin 'Valloric/YouCompleteMe'
+"Utility
+Plugin 'scrooloose/nerdtree'
+Plugin 'Townk/vim-autoclose'
 "fzf : fuzzy finder
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
 "syntastic : syntax errors
-Plugin 'vim-syntastic/syntastic'
+"Plugin 'vim-syntastic/syntastic'
 "snipmate
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
@@ -30,6 +33,9 @@ Plugin 'Shougo/unite.vim'
 "comment
 Plugin 'tpope/vim-commentary'
 
+" Theme / Interface
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 " Not shure I like it !
 " Collection of language packs for Vim
 "Plugin 'sheerun/vim-polyglot'
@@ -82,9 +88,99 @@ let g:syntastic_check_on_wq = 0
 "command SHOW execute "!evince %:r.pdf &"
 "command SAVE execute "w|make all"
 "command SDRAFT execute "w|make draft"
+"""""""""""""""""""""""""""""""""""""
+" Configuration Section
+"""""""""""""""""""""""""""""""""""""
+" AutoClose configuration
+let g:AutoCloseExpandEnterOn = 1
+" Fzf Configuration
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+
+" Vim-Airline Configuration
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1 
+let g:airline_theme='hybrid'
+let g:hybrid_custom_term_colors = 1
+let g:hybrid_reduced_contrast = 1 
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+"""""""""""""""""""""""""""""""""""""
+" Mappings configurationn
+"""""""""""""""""""""""""""""""""""""
+map <C-n> :NERDTreeToggle<CR>
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"function! s:my_cr_function()
+" return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+" " For no inserting <CR> key.
+" "return pumvisible() ? "\<C-y>" : "\<CR>"
+"endfunction
+
+" Right displacement to exit closed ()
+inoremap <c-l> <right>
+
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" Mapping selecting Mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Paste from clipboard
+nnoremap <leader>v "+p
+
+" Shortcuts
+nnoremap <leader>o :Files<CR> 
+nnoremap <leader>O :CtrlP<CR>
+nnoremap <leader>w :w<CR>
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
 
 nnoremap <leader>@@ :%s/\(^\s*\)\@<!\zs\s*{\ze$\n\(.*\n\)\=\(\s\+\)}/\r\3{/g<cr>
-" Leader Shortcuts
+nnoremap <leader>@@@ :%s/\S\+\zs\s*\n\s\+{.*$/ {/g
+" leader Shortcuts
 "{{{
 let mapleader="," "leader is comma
 let maplocalleader="," "localleader is comma
@@ -128,34 +224,35 @@ nnoremap <leader>W :match none<cr>
 " Delete trailing whitespace
 nnoremap <leader>dw mq:%s/\v\s+$//ge<cr>`q
 " Use very-magic search option by default
-nnoremap / /\v
+" nnoremap / /\v
 " Stop highlighting items for the last search
 nnoremap <leader>/ :nohlsearch<cr>
 vnoremap <leader>/ :nohlsearch<cr>
 " Move trough search and visually select results
-vnoremap n ungn
-vnoremap N uNgN
+"vnoremap n ungn
+"vnoremap N uNgN
 " }}}
 
 " operator-pending mappings
 "{{{
+"Defines p and parenthesis operator pending
 onoremap p i(
-" in/around next/last single quotes
+"in/around next/last single quotes
 onoremap in' :<c-u>normal! f'vi'<cr>
 onoremap il' :<c-u>normal! F'vi'<cr>
 onoremap an' :<c-u>normal! f'va'<cr>
 onoremap al' :<c-u>normal! F'va'<cr>
-" in/around next/last double quotes
+"in/around next/last double quotes
 onoremap in" :<c-u>normal! f"vi"<cr>
 onoremap il" :<c-u>normal! F"vi"<cr>
 onoremap an" :<c-u>normal! f"va"<cr>
 onoremap al" :<c-u>normal! F"va"<cr>
-" in/around next/last parenthesis
+"in/around next/last parenthesis
 onoremap in( :<c-u>normal! f(vi(<cr>
 onoremap il( :<c-u>normal! F)vi(<cr>
 onoremap an( :<c-u>normal! f(va(<cr>
 onoremap al( :<c-u>normal! F)va(<cr>
-" in/around next/last curly brackets
+"in/around next/last curly brackets
 onoremap in{ :<c-u>normal! f{vi{<cr>
 onoremap il{ :<c-u>normal! F}vi{<cr>
 onoremap an{ :<c-u>normal! f{va{<cr>
@@ -674,10 +771,10 @@ nnoremap <silent> <F6> "<Esc>:silent setlocal spell! spelllang=fr<CR>"
 " Space & Tabs
 "
 
-set tabstop=4 " number of visual spaces per TAB
-set softtabstop=4 " number of spaces in tab when editing
+set tabstop=2 " number of visual spaces per TAB
+set softtabstop=2 " number of spaces in tab when editing
 set expandtab " tabs are spaces
-set shiftwidth=4
+set shiftwidth=2
 set autoindent " this is a must
 set formatoptions+=r " automatically insert comment character at beginning of line
 
