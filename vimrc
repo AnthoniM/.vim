@@ -898,6 +898,12 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
 
+augroup markdown
+    autocmd!
+    autocmd Filetype markdown command! W w|! pandoc -s -o %:r.pdf %
+    autocmd Filetype markdown nnoremap <localleader>w :W<cr><cr>
+augroup END
+
 "
 " Backups
 "
