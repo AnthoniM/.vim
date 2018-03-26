@@ -1,20 +1,15 @@
-"NOTE: Should escape the selection for the pattern to match
-nnoremap <leader>c' :set operatorfunc=<SID>SingleQuoteSurround<cr>g@
-"vnoremap <leader>c' :<c-u>call <SID>SingleQuoteSurround(visualmode())<cr>
-nnoremap <leader>c" :set operatorfunc=<SID>DoubleQuoteSurround<cr>g@
-"vnoremap <leader>c" :<c-u>call <SID>DoubleQuoteSurround(visualmode())<cr>
-nnoremap <leader>c* :set operatorfunc=<SID>StarSurround<cr>g@
-
-"Puts word between single/double quotation marks
-nnoremap <silent> <leader>cq viw:call <SID>BackAccentSurround('v')<cr>
-vnoremap <silent> <leader>cq :<c-u>call <SID>BackAccentSurround('v')<cr>
-nnoremap <silent> <leader>' viw:call <SID>SingleQuoteSurround('v')<cr>
-vnoremap <silent> <leader>' :<c-u>call <SID>SingleQuoteSurround('v')<cr>
-nnoremap <silent> <leader>" viw:call <SID>DoubleQuoteSurround('v')<cr>
-vnoremap <silent> <leader>" :<c-u>call <SID>DoubleQuoteSurround('v')<cr>
-nnoremap <silent> <leader>* viw:call <SID>StarSurround('v')<cr>
-vnoremap <silent> <leader>* :<c-u>call <SID>StarSurround('v')<cr>
-"Also use <leader>c' from surround.vim to surround a more general selection
+nnoremap <silent> <leader>sq viw:call <SID>BackAccentSurround('v')<cr>
+nnoremap <silent> <leader>Sq viW:call <SID>BackAccentSurround('v')<cr>
+vnoremap <silent> <leader>sq :<c-u>call <SID>BackAccentSurround('v')<cr>
+nnoremap <silent> <leader>s' viw:call <SID>SingleQuoteSurround('v')<cr>
+nnoremap <silent> <leader>S' viW:call <SID>SingleQuoteSurround('v')<cr>
+vnoremap <silent> <leader>s' :<c-u>call <SID>SingleQuoteSurround('v')<cr>
+nnoremap <silent> <leader>s" viw:call <SID>DoubleQuoteSurround('v')<cr>
+nnoremap <silent> <leader>S" viW:call <SID>DoubleQuoteSurround('v')<cr>
+vnoremap <silent> <leader>s" :<c-u>call <SID>DoubleQuoteSurround('v')<cr>
+nnoremap <silent> <leader>s* viw:call <SID>StarSurround('v')<cr>
+nnoremap <silent> <leader>S* viW:call <SID>StarSurround('v')<cr>
+vnoremap <silent> <leader>s* :<c-u>call <SID>StarSurround('v')<cr>
 
 let s:special_char = '/\'
 let s:quote_family = [{"left" : "\'", "right" : "\'"},
