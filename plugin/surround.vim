@@ -10,12 +10,21 @@ vnoremap <silent> <leader>s" :<c-u>call <SID>DoubleQuoteSurround('v')<cr>
 nnoremap <silent> <leader>s* viw:call <SID>StarSurround('v')<cr>
 nnoremap <silent> <leader>S* viW:call <SID>StarSurround('v')<cr>
 vnoremap <silent> <leader>s* :<c-u>call <SID>StarSurround('v')<cr>
+nnoremap <silent> <leader>s% viw:call <SID>PercentSurround('v')<cr>
+nnoremap <silent> <leader>S% viW:call <SID>PercentSurround('v')<cr>
+vnoremap <silent> <leader>s% :<c-u>call <SID>PercentSurround('v')<cr>
 
 let s:special_char = '/\'
 let s:quote_family = [{"left" : "\'", "right" : "\'"},
                      \{"left" : "\"", "right" : "\""},
                      \{"left" : "`", "right" : "`"},
+                     \{"left" : "%", "right" : "%"},
                      \{"left" : "*", "right" : "*"}]
+
+function! s:PercentSurround(type)
+    let tag = {"left" : "%", "right" : "%"}
+    call s:Surround(tag, s:quote_family, a:type)
+endfunction
 
 function! s:StarSurround(type)
     let tag = {"left" : "*", "right" : "*"}
