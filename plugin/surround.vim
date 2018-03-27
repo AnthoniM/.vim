@@ -13,13 +13,22 @@ vnoremap <silent> <leader>s* :<c-u>call <SID>StarSurround('v')<cr>
 nnoremap <silent> <leader>s% viw:call <SID>PercentSurround('v')<cr>
 nnoremap <silent> <leader>S% viW:call <SID>PercentSurround('v')<cr>
 vnoremap <silent> <leader>s% :<c-u>call <SID>PercentSurround('v')<cr>
+nnoremap <silent> <leader>s_ viw:call <SID>UnderscoreSurround('v')<cr>
+nnoremap <silent> <leader>S_ viW:call <SID>UnderscoreSurround('v')<cr>
+vnoremap <silent> <leader>s_ :<c-u>call <SID>UnderscoreSurround('v')<cr>
 
 let s:special_char = '/\'
 let s:quote_family = [{"left" : "\'", "right" : "\'"},
                      \{"left" : "\"", "right" : "\""},
                      \{"left" : "`", "right" : "`"},
+                     \{"left" : "_", "right" : "_"},
                      \{"left" : "%", "right" : "%"},
                      \{"left" : "*", "right" : "*"}]
+
+function! s:UnderscoreSurround(type)
+    let tag = {"left" : "_", "right" : "_"}
+    call s:Surround(tag, s:quote_family, a:type)
+endfunction
 
 function! s:PercentSurround(type)
     let tag = {"left" : "%", "right" : "%"}
@@ -46,6 +55,16 @@ function! s:DoubleQuoteSurround(type)
     call s:Surround(tag, s:quote_family, a:type)
 endfunction
 
+function! s:FindInclusiveSurroundCharacters(body)
+    let last = len(a:body)-1
+    if len(a:body) > 1 && (a:body[0] ==# "_" && a:body[last] ==# "_")
+        " remore surronding _ from body of the selection
+        return a:body[1:last-1]
+    else
+        return a:body
+    endif
+endfunction
+
 function! s:Surround(tag, family, type)
     let saved_unnamed_register = @@
 
@@ -60,7 +79,7 @@ function! s:Surround(tag, family, type)
         execute "normal! v`]y"
     endif
     let len_body = len(@@)
-    let body = escape(@@, s:special_char)
+    let body = s:FindInclusiveSurroundCharacters(escape(@@, s:special_char))
 
     " Generate regex
     let sep = ''
