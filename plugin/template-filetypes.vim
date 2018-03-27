@@ -1,7 +1,7 @@
 " Plugin that creates a template for different filetypes.
 
 autocmd BufNewFile * :call <SID>TemplateFile(&filetype)
-autocmd BufEnter * :call <SID>TemplateFile(&filetype)
+"autocmd BufEnter * :call <SID>TemplateFile(&filetype)
 
 function! s:TemplateFile(filetype)
     if a:filetype ==# 'vim'
@@ -65,6 +65,8 @@ endfunction
 
 function! s:JAVATemplate()
     let filename = expand("%:t")
+    let classname = expand("%:r")
+    let classdef = "public class ".classname
     let first_line = "// "
     let fname_comment = first_line.filename
     if (getline("1") !~ first_line)
@@ -73,7 +75,16 @@ function! s:JAVATemplate()
             execute 'normal! diw'
         endif
         execute 'normal! o'
+        execute 'normal! o'.
+                    \classdef.
+                    \"\<cr>{\<cr>}"
+        execute 'normal! O'.
+                    \"public static void main (String[] args)".
+                    \"\<cr>{\<cr>}"
+        execute 'normal! O'."\t"
+        startinsert!
     elseif (getline("1") !~ fname_comment)
         call setline("1", fname_comment)
+        execute '%s/^public class \zs\(\w\+\)/'.classname.'/e'
     endif
 endfunction
