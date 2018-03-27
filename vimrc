@@ -661,7 +661,7 @@ iabbrev ssig --<cr>Anthoni Manseau<cr>anthonimanseau@gmail.com
 "
 " Colors
 "
-syntax enable " enable syntax processing
+"syntax enable " enable syntax processing
 
 "
 " Correction orthographique
@@ -811,6 +811,11 @@ augroup END
 " Backups
 "
 
+"set backup
+"set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+"set backupskip=/tmp/*,/private/tmp/*
+"set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+"set writebackup
 
 " Eat space when using iabbrev
 function! Eatchar(pat)
