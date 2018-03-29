@@ -17,7 +17,7 @@ nnoremap <silent> <leader>s_ viw:call <SID>UnderscoreSurround('v')<cr>
 nnoremap <silent> <leader>S_ viW:call <SID>UnderscoreSurround('v')<cr>
 vnoremap <silent> <leader>s_ :<c-u>call <SID>UnderscoreSurround('v')<cr>
 
-let s:special_char = '/\'
+let s:special_char = '/\*'
 let s:quote_family = [{"left" : "\'", "right" : "\'"},
                      \{"left" : "\"", "right" : "\""},
                      \{"left" : "`", "right" : "`"},
