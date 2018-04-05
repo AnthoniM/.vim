@@ -760,7 +760,7 @@ iabbrev ssig --<cr>Anthoni Manseau<cr>anthonimanseau@gmail.com
 "
 " Colors
 "
-syntax enable " enable syntax processing
+"syntax enable " enable syntax processing
 
 "
 " Correction orthographique
@@ -910,14 +910,19 @@ augroup END
 " Backups
 "
 
-set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set backupskip=/tmp/*,/private/tmp/*
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set writebackup
+"set backup
+"set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+"set backupskip=/tmp/*,/private/tmp/*
+"set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+"set writebackup
 
 " Eat space when using iabbrev
 function! Eatchar(pat)
   let c = nr2char(getchar(0))
   return (c =~ a:pat) ? '' : c
 endfunction
+
+" remap copy to clipboard
+noremap <leader>Y gg"+yG
+noremap <leader>y "+y
+noremap <leader>yy "+yy
