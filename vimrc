@@ -32,6 +32,8 @@ Plugin 'Shougo/vimfiler.vim'
 Plugin 'Shougo/unite.vim'
 "comment
 Plugin 'tpope/vim-commentary'
+"syntax
+Plugin 'leafgarland/typescript-vim'
 
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
