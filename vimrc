@@ -927,5 +927,11 @@ nnoremap <leader>yy "+yy
 " remap paste to clipboard
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
+
+" Deactivate bells
+set noerrorbells 
+set visualbell 
+set t_vb=
+
 " Format single line xml/html files
 nnoremap <c-f> :%s/></>\r</g<cr>:%s/\(\w\+\)>\zs$\n\ze<\/\1//g<cr>gg=G
