@@ -927,3 +927,5 @@ nnoremap <leader>yy "+yy
 " remap paste to clipboard
 nnoremap <leader>p "+p
 nnoremap <leader>P "+P
+" Format single line xml/html files
+nnoremap <c-f> :%s/></>\r</g<cr>:%s/\(\w\+\)>\zs$\n\ze<\/\1//g<cr>gg=G
