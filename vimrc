@@ -758,7 +758,7 @@ iabbrev ssig --<cr>Anthoni Manseau<cr>anthonimanseau@gmail.com
 "
 " Colors
 "
-"syntax enable " enable syntax processing
+syntax enable " enable syntax processing
 
 "
 " Correction orthographique
