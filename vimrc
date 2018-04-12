@@ -921,6 +921,9 @@ function! Eatchar(pat)
 endfunction
 
 " remap copy to clipboard
-noremap <leader>Y gg"+yG
-noremap <leader>y "+y
-noremap <leader>yy "+yy
+nnoremap <leader>Y gg"+yG
+nnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+" remap paste to clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
