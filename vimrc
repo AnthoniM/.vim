@@ -744,6 +744,8 @@ iabbrev @@@ anthonimanseau@gmail.com
 " Signature
 iabbrev ssig --<cr>Anthoni Manseau<cr>anthonimanseau@gmail.com
 
+" Set $MYVIMRC
+let $MYVIMRC='~/.vim/vimrc'
 "Open .vimrc in a vsplit
 :nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 :nnoremap <leader>eh :split $MYVIMRC<cr>
@@ -935,3 +937,6 @@ set t_vb=
 
 " Format single line xml/html files
 nnoremap <c-f> :%s/></>\r</g<cr>:%s/\(\w\+\)>\zs$\n\ze<\/\1//g<cr>gg=G
+
+" Set default font size
+set guifont=Consolas:h12:cANSI:qDRAFT
