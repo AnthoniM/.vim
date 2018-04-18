@@ -356,7 +356,7 @@ endfunction
 
 function! GetTag(inline)
     let name = input("Enter tag name : ")
-    call InsertTag(name,a:inline)
+    call InsertTag(name,a:inline, {})
 endfunction
 
 function! InsertTag(name, inline, parameters)
