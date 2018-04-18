@@ -760,7 +760,7 @@ iabbrev ssig --<cr>Anthoni Manseau<cr>anthonimanseau@gmail.com
 "
 " Colors
 "
-"syntax enable " enable syntax processing
+syntax enable " enable syntax processing
 
 "
 " Correction orthographique
@@ -923,6 +923,17 @@ function! Eatchar(pat)
 endfunction
 
 " remap copy to clipboard
-noremap <leader>Y gg"+yG
-noremap <leader>y "+y
-noremap <leader>yy "+yy
+nnoremap <leader>Y gg"+yG
+nnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+" remap paste to clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+
+" Deactivate bells
+set noerrorbells 
+set visualbell 
+set t_vb=
+
+" Format single line xml/html files
+nnoremap <c-f> :%s/></>\r</g<cr>:%s/\(\w\+\)>\zs$\n\ze<\/\1//g<cr>gg=G
