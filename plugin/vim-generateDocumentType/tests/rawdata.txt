@@ -1,0 +1,11 @@
+0	document1
+3	field1
+3	field2
+3	field3
+3	document2
+5	field4
+5	document3
+7	document4
+9	field5
+3	field6
+3	field7
