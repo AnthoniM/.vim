@@ -940,3 +940,6 @@ nnoremap <c-f> :%s/></>\r</g<cr>:%s/\(\w\+\)>\zs$\n\ze<\/\1//g<cr>gg=G
 
 " Set default font size
 set guifont=Consolas:h12:cANSI:qDRAFT
+
+" Extract variable from complete path
+" %s/%[^%]\+:\([^:%]\+\)%/%\1%/g
