@@ -6,7 +6,7 @@ vnoremap <leader>z :<c-u>call <sid>StandardizeVariables(visualmode())<cr><cr>
 function! s:ExtractWORD(range)
   " Extract the WORD up to a non WORD non space character 
   " and remove the last space if present
-  execute a:range.'s/\(\%(\h\|\d\|\s\|\/\)\+\(\h\|\d\)\)\s*.*/\1/ge'
+  execute a:range.'s/\(\%(\h\|\d\|\s\|\/\|-\)\+\(\h\|\d\)\)\s*.*/\1/ge'
 endfunction
 
 function! s:RemoveDefiniteArticles(range)
@@ -17,7 +17,7 @@ function! s:ReplaceSpacesForwardSlash(range)
   " Replaces spaces and forward slashes with underscores
   " Absorbs mutliple spaces/forward slashes into one single underscore
   execute a:range.'s/^\s\+//ge'
-  execute a:range.'s/\(\s\|\/\)\+/_/ge'
+  execute a:range.'s/\(\s\|\/\|-\)\+/_/ge'
 endfunction
 
 function! s:ReplaceAccents(range)
