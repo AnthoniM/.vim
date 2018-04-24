@@ -32,6 +32,8 @@ Plugin 'Shougo/vimfiler.vim'
 Plugin 'Shougo/unite.vim'
 "comment
 Plugin 'tpope/vim-commentary'
+"syntax
+Plugin 'leafgarland/typescript-vim'
 
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
@@ -354,7 +356,7 @@ endfunction
 
 function! GetTag(inline)
     let name = input("Enter tag name : ")
-    call InsertTag(name,a:inline)
+    call InsertTag(name,a:inline, {})
 endfunction
 
 function! InsertTag(name, inline, parameters)
