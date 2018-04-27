@@ -12,7 +12,11 @@ function! s:ExtractWORD(range)
 endfunction
 
 function! s:RemoveDefiniteArticles(range)
-  execute a:range.'s/\<\(\%(de\|la\|les\|du\)\>\|\%([dl]'."\'".'\)\)//ge'
+  let preps = ['de', 'le', 'la', 'les', 'chez', 'du', 'des', 'ou', 'a']
+  let spreps = ['d', 'l', 'n', 'm', 's']
+  let grp = '\%('.join(preps,'\|').'\)'
+  let sgrp = '['.join(spreps,'').']'
+  execute a:range.'s/\<\('.grp.'\>\|\%('.sgrp."\'".'\)\)//ge'
 endfunction
 
 function! s:ReplaceSpacesForwardSlash(range)
