@@ -7,6 +7,8 @@ function! s:ExtractWORD(range)
   " Extract the WORD up to a non WORD non space character 
   " and remove the last space if present
   execute a:range.'s/\(\%(\h\|\d\|\s\|\/\|-\)\+\(\h\|\d\)\)\s*.*/\1/ge'
+  " Remove spaces at the end of the line
+  execute a:range.'s/\s\+$//ge'
 endfunction
 
 function! s:RemoveDefiniteArticles(range)
