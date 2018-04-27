@@ -42,10 +42,10 @@ endfunction
 function! s:StandardizeVariables(type)
   let saved_cursor = getcurpos()
   let range = s:GetRange(a:type)
-  call s:ExtractWORD(range)
-  call s:RemoveDefiniteArticles(range)
-  call s:ReplaceSpacesForwardSlash(range)
   call s:ReplaceAccents(range)
+  call s:RemoveDefiniteArticles(range)
+  call s:ExtractWORD(range)
+  call s:ReplaceSpacesForwardSlash(range)
   call s:lowerCases(range)
   call setpos('.', saved_cursor)
 endfunction
