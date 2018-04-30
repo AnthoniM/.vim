@@ -948,4 +948,4 @@ if has("win32")
 endif
 
 " Extract variable from complete path
-" %s/%[^%]\+:\([^:%]\+\)%/%\1%/g
+" %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
