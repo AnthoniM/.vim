@@ -926,7 +926,7 @@ endfunction
 
 " remap copy to clipboard
 nnoremap <leader>Y gg"+yG
-nnoremap <leader>y "+y
+vnoremap <leader>y "+y
 nnoremap <leader>yy "+yy
 " remap paste to clipboard
 nnoremap <leader>p "+p
