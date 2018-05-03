@@ -6,18 +6,24 @@ vnoremap <leader>z :<c-u>call <sid>StandardizeVariables(visualmode())<cr><cr>
 function! s:ExtractWORD(range)
   " Extract the WORD up to a non WORD non space character 
   " and remove the last space if present
-  execute a:range.'s/\(\%(\h\|\d\|\s\|\/\)\+\(\h\|\d\)\)\s*.*/\1/ge'
+  execute a:range.'s/\(\%(\h\|\d\|\s\|\/\|-\)\+\(\h\|\d\)\)\s*.*/\1/ge'
+  " Remove spaces at the end of the line
+  execute a:range.'s/\s\+$//ge'
 endfunction
 
 function! s:RemoveDefiniteArticles(range)
-  execute a:range.'s/\<\(\%(de\|la\|les\|du\)\>\|\%([dl]'."\'".'\)\)//ge'
+  let preps = ['de', 'le', 'la', 'les', 'chez', 'du', 'des', 'ou', 'a']
+  let spreps = ['d', 'l', 'n', 'm', 's']
+  let grp = '\%('.join(preps,'\|').'\)'
+  let sgrp = '['.join(spreps,'').']'
+  execute a:range.'s/\<\('.grp.'\>\|\%('.sgrp."\'".'\)\)//ge'
 endfunction
 
 function! s:ReplaceSpacesForwardSlash(range)
   " Replaces spaces and forward slashes with underscores
   " Absorbs mutliple spaces/forward slashes into one single underscore
   execute a:range.'s/^\s\+//ge'
-  execute a:range.'s/\(\s\|\/\)\+/_/ge'
+  execute a:range.'s/\(\s\|\/\|-\)\+/_/ge'
 endfunction
 
 function! s:ReplaceAccents(range)
@@ -36,10 +42,10 @@ endfunction
 function! s:StandardizeVariables(type)
   let saved_cursor = getcurpos()
   let range = s:GetRange(a:type)
-  call s:ExtractWORD(range)
-  call s:RemoveDefiniteArticles(range)
-  call s:ReplaceSpacesForwardSlash(range)
   call s:ReplaceAccents(range)
+  call s:RemoveDefiniteArticles(range)
+  call s:ExtractWORD(range)
+  call s:ReplaceSpacesForwardSlash(range)
   call s:lowerCases(range)
   call setpos('.', saved_cursor)
 endfunction

@@ -20,7 +20,7 @@ nnoremap <silent> <leader>s( viw:call <SID>ParenthesisSurround('v')<cr>
 nnoremap <silent> <leader>S( viW:call <SID>ParenthesisSurround('v')<cr>
 vnoremap <silent> <leader>s( :<c-u>call <SID>ParenthesisSurround('v')<cr>
 
-let s:special_char = '/\*'
+let s:special_char = '/\*~'
 let s:quote_family = [{"left" : "\'", "right" : "\'"},
                      \{"left" : "\"", "right" : "\""},
                      \{"left" : "`", "right" : "`"},

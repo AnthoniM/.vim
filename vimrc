@@ -746,6 +746,8 @@ iabbrev @@@ anthonimanseau@gmail.com
 " Signature
 iabbrev ssig --<cr>Anthoni Manseau<cr>anthonimanseau@gmail.com
 
+" Set $MYVIMRC
+let $MYVIMRC='~/.vim/vimrc'
 "Open .vimrc in a vsplit
 :nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 :nnoremap <leader>eh :split $MYVIMRC<cr>
@@ -924,7 +926,7 @@ endfunction
 
 " remap copy to clipboard
 nnoremap <leader>Y gg"+yG
-nnoremap <leader>y "+y
+vnoremap <leader>y "+y
 nnoremap <leader>yy "+yy
 " remap paste to clipboard
 nnoremap <leader>p "+p
@@ -937,3 +939,13 @@ set t_vb=
 
 " Format single line xml/html files
 nnoremap <c-f> :%s/></>\r</g<cr>:%s/<\(\w\+\)>\zs$\n\ze<\/\1//g<cr>gg=G
+
+" Set default font size
+set guifont=Consolas:h12:cANSI:qDRAFT
+
+if has("win32")
+  set runtimepath^=~/.vim/
+endif
+
+" Extract variable from complete path
+" %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
