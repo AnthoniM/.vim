@@ -453,7 +453,7 @@ endfunction
 augroup filetype_html
     autocmd!
     " Open current file in default browser
-    autocmd FileType php,html,javascript nnoremap <F4> :execute ':silent !xdg-open http://localhost/'.strpart(expand('%:p'),len('/var/www/html/'))<cr>:redraw!<cr>
+    autocmd FileType php,xml,html,javascript nnoremap <F4> :execute ':silent !xdg-open http://localhost/'.strpart(expand('%:p'),len('/var/www/html/'))<cr>:redraw!<cr>
 
     "attribute :
     "   style
@@ -461,7 +461,7 @@ augroup filetype_html
     "   lang
     "   id
     "   class
-    autocmd FileType php,html,javascript :inoreabbrev <buffer> astyle style="property:value;"<esc>
+    autocmd FileType php,xml,html,javascript :inoreabbrev <buffer> astyle style="property:value;"<esc>
                 \:execute '/\%'.line(".").'l\v("\zs\w*\ze:\|:\zs\w*\ze\;")'<cr>
                 \ngn
                 \<c-r>=Eatchar('\s')<cr>
@@ -607,9 +607,9 @@ augroup filetype_html
     " define abbreviation for common tags.
     "
     " insert a general tag
-    autocmd FileType php,html,javascript :inoreabbrev <buffer> ttag <esc>:call GetTag('0')<cr>
+    autocmd FileType php,xml,html,javascript :inoreabbrev <buffer> ttag <esc>:call GetTag('0')<cr>
                 \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType php,html,javascript :inoreabbrev <buffer> ittag <esc>:call GetTag('1')<cr>
+    autocmd FileType php,xml,html,javascript :inoreabbrev <buffer> ittag <esc>:call GetTag('1')<cr>
                 \<c-r>=Eatchar('\s')<cr>
     for i in tags
         call GenerateTag(i)
