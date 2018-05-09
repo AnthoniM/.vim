@@ -1,15 +1,12 @@
 nnoremap <localleader>h :call <SID>TEMPNAME(expand('%'))<cr>
 
-function! s:OpenTag(name, standaloneName)
-  return '<'.a:name.'>'
-endfunction
-
-function! s:CloseTag(name)
-  return '</'.a:name.'>'
-endfunction
-
-function! s:ExtractStandalone(lines, cursor, depth)
-endfunction
+"function! s:OpenTag(name, standaloneName)
+" return '<'.a:name.'>'
+"endfunction
+"
+"function! s:CloseTag(name)
+" return '</'.a:name.'>'
+"endfunction
 
 function! s:TEMPNAME(filename)
   let lines = readfile(a:filename)
