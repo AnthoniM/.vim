@@ -62,7 +62,7 @@ function! s:InsertTag(name, inline, parameters)
 
   " Set the proper insert/view state
   if insert
-    if !a:inline
+    if !a:inline || a:inline == 2
       startinsert!
     else
       startinsert
