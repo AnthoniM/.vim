@@ -45,10 +45,10 @@ function! s:InsertTag(name, inline, parameters)
 
   " Write tags and remove space from abbreviation
   if !a:inline
-    execute 'normal! diw'
-          \.indent.begin_tag
-          \."\n".r."\<esc>"
-          \.indent.end_tag
+    execute 'normal! a'
+          \.begin_tag
+          \."\<esc>o\<esc>".r."\<esc>"
+          \.indentEndTag.end_tag
           \."\<esc>k0"
           \.indent
   else
