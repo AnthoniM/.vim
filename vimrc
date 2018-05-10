@@ -34,10 +34,14 @@ Plugin 'Shougo/unite.vim'
 Plugin 'tpope/vim-commentary'
 "syntax
 Plugin 'leafgarland/typescript-vim'
+"Plugin 'HerringtonDarkholme/yats.vim'
+Plugin 'morhetz/gruvbox'
 
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+
+
 " Not shure I like it !
 " Collection of language packs for Vim
 "Plugin 'sheerun/vim-polyglot'
@@ -851,7 +855,8 @@ let php_htmlInStrings = 1
 set smartcase
 
 "set default colorscheme
-colorscheme Tomorrow-Night
+colorscheme gruvbox
+set background=dark
 
 "
 " Launch Config
