@@ -42,11 +42,12 @@ Plugin 'vim-airline/vim-airline-themes'
 " Collection of language packs for Vim
 "Plugin 'sheerun/vim-polyglot'
 "statusbar plugin
-"Plugin 'powerline/powerline'
+Plugin 'powerline/powerline'
 
 " TODO:
 " extended search and replace
 "Plugin 'tpope/vim-abolish'
+Plugin 'tpope/vim-fugitive'
 
 "color scheme
 Plugin 'Ardakilic/vim-tomorrow-night-theme'
