@@ -77,7 +77,8 @@ function! s:GenerateTag(parameters)
   let name = a:parameters[0]
   let abbrev = a:parameters[1]
   let parameters = a:parameters[2]
-  let inline = a:parameters[3]
+  "let inline = a:parameters[3]
+  let inline = 1
   if abbrev ==# "none"
     let abbrev = name
   endif
@@ -94,7 +95,9 @@ endfunction
 
 function! s:GenerateTagAbrrev(abbrev, name, inline, parameters)
   if a:inline == 1
-    let tag = 'it'.a:abbrev
+    " going to define inline tag by default
+    "let tag = 'it'.a:abbrev
+    let tag = 't'.a:abbrev
   else
     let tag = 't'.a:abbrev
   endif
