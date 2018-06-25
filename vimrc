@@ -14,7 +14,7 @@ Plugin 'ternjs/tern_for_vim'
 "Plugin 'Valloric/YouCompleteMe'
 "Utility
 Plugin 'scrooloose/nerdtree'
-Plugin 'Townk/vim-autoclose'
+Plugin 'AnthoniM/vim-autoclose'
 "fzf : fuzzy finder
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
@@ -46,11 +46,12 @@ Plugin 'vim-airline/vim-airline-themes'
 " Collection of language packs for Vim
 "Plugin 'sheerun/vim-polyglot'
 "statusbar plugin
-"Plugin 'powerline/powerline'
+Plugin 'powerline/powerline'
 
 " TODO:
 " extended search and replace
 "Plugin 'tpope/vim-abolish'
+Plugin 'tpope/vim-fugitive'
 
 "color scheme
 Plugin 'Ardakilic/vim-tomorrow-night-theme'
@@ -952,5 +953,8 @@ if has("win32")
   set runtimepath^=~/.vim/
 endif
 
+inoremap dfj <cr><esc>O
+inoremap dfl <right>
+inoremap dfh <left>
 " Extract variable from complete path
 " %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
