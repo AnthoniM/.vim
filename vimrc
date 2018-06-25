@@ -948,5 +948,8 @@ if has("win32")
   set runtimepath^=~/.vim/
 endif
 
+inoremap dfj <cr><esc>O
+inoremap dfl <right>
+inoremap dfh <left>
 " Extract variable from complete path
 " %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
