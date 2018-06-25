@@ -682,5 +682,8 @@ endif
 inoremap dfj <cr><esc>O
 inoremap dfl <right>
 inoremap dfh <left>
+
+" Close file without closing split window
+noremap <leader>d :b# \| bd #<cr>
 " Extract variable from complete path
 " %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
