@@ -956,3 +956,4 @@ endif
 " Extract variable from complete path
 " %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
 inoreabbrev nowd <C-R>=strftime('%Y-%m-%d')<C-M>
+nnoremap <localleader><> :%s/&lt;/</g<cr>:%s/&gt;/>/g<cr>
