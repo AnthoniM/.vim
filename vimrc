@@ -898,9 +898,13 @@ augroup configgroup
     autocmd BufEnter Makefile setlocal noexpandtab
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
-    autocmd BufEnter *.txt setlocal softtabstop=2
-    autocmd BufEnter *.txt setlocal tabstop=2
-    autocmd BufEnter *.txt setlocal shiftwidth=2
+    autocmd BufEnter *.txt setlocal noexpandtab
+    autocmd BufEnter *.txt setlocal softtabstop=8
+    autocmd BufEnter *.txt setlocal tabstop=8
+    autocmd BufEnter *.txt setlocal shiftwidth=8
+"   autocmd BufEnter *.txt setlocal softtabstop=2
+"   autocmd BufEnter *.txt setlocal tabstop=2
+"   autocmd BufEnter *.txt setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
 
