@@ -211,7 +211,6 @@ nnoremap J <c-e>
 nnoremap K <c-y>
 " jk is escape
 inoremap jk <esc>
-inoremap JK <esc>
 " disable <esc> to learn to use jk.
 inoremap <esc> <nop>
 " disable arrow keys to use hjkl.
