@@ -14,7 +14,7 @@ Plugin 'ternjs/tern_for_vim'
 "Plugin 'Valloric/YouCompleteMe'
 "Utility
 Plugin 'scrooloose/nerdtree'
-Plugin 'Townk/vim-autoclose'
+Plugin 'AnthoniM/vim-autoclose'
 "fzf : fuzzy finder
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
@@ -38,6 +38,7 @@ Plugin 'leafgarland/typescript-vim'
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'tpope/vim-fugitive'
 " Not shure I like it !
 " Collection of language packs for Vim
 "Plugin 'sheerun/vim-polyglot'
