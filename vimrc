@@ -951,5 +951,8 @@ endif
 inoremap dfj <cr><esc>O
 inoremap dfl <right>
 inoremap dfh <left>
+
+"Delete buffer
+nnoremap <c-x> :bn\|bd#<cr>
 " Extract variable from complete path
 " %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
