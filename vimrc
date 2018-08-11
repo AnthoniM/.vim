@@ -282,6 +282,7 @@ augroup END
 "{{{
 augroup statements_shortcuts
     autocmd!
+    autocmd FileType python         nnoremap <F5> :!pkill -f %<cr>:silent exec "!/usr/bin/python3 % &"<cr>
     " if
     autocmd FileType python         :inoreabbrev <buffer> iff if:<left>
     autocmd FileType javascript,cpp :inoreabbrev <buffer> iff if ()<cr>{<cr>}<esc>2k%%a
@@ -297,7 +298,7 @@ augroup statements_shortcuts
     autocmd FileType python,vim     :inoreabbrev <buffer> ret return
     autocmd FileType javascript,cpp :inoreabbrev <buffer> ret return ;<left>
     " functions
-    autocmd FileType python     :inoreabbrev <buffer> def def:<left>
+    "autocmd FileType python     :inoreabbrev <buffer> def def:<left>
     autocmd FileType javascript :inoreabbrev <buffer> func function()<cr>{<cr>}<esc>2kLi
     autocmd FileType cpp        :inoreabbrev <buffer> func function()<cr>{<cr>}<esc>2kLi
 "     semicolon
