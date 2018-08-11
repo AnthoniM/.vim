@@ -689,3 +689,6 @@ nnoremap <c-x> :bn\|bd#<cr>
 
 " Extract variable from complete path
 " %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
+"
+
+set mouse=a
