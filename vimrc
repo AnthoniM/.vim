@@ -27,6 +27,7 @@ Plugin 'garbas/vim-snipmate'
 " Optional:
 Plugin 'AnthoniM/vim-snippets'
 Plugin 'AnthoniM/vim-tag'
+Plugin 'AnthoniM/vim-comment'
 "vimfiler depends on unite.vim
 Plugin 'Shougo/vimfiler.vim'
 "unite.vim
