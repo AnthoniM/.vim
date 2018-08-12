@@ -26,6 +26,7 @@ Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 " Optional:
 Plugin 'AnthoniM/vim-snippets'
+Plugin 'AnthoniM/vim-tag'
 "vimfiler depends on unite.vim
 Plugin 'Shougo/vimfiler.vim'
 "unite.vim
