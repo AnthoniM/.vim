@@ -35,10 +35,6 @@ function! s:ReplaceAccents(range)
   execute a:range.'s/[ç]/c/ge'
 endfunction
 
-function! s:ReplaceNum(range)
-  execute a:range.'s/[Nn]°/num /ge'
-endfunction
-
 function! s:lowerCases(range)
   execute a:range.'s/\(\w\+\)/\L\1/ge'
 endfunction
@@ -47,7 +43,6 @@ function! s:StandardizeVariables(type)
   let saved_cursor = getcurpos()
   let range = s:GetRange(a:type)
   call s:ReplaceAccents(range)
-  call s:ReplaceNum(range)
   call s:RemoveDefiniteArticles(range)
   call s:ExtractWORD(range)
   call s:ReplaceSpacesForwardSlash(range)
