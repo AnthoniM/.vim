@@ -39,7 +39,6 @@ Plugin 'leafgarland/typescript-vim'
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-fugitive'
 " Not shure I like it !
 " Collection of language packs for Vim
 "Plugin 'sheerun/vim-polyglot'
@@ -953,8 +952,3 @@ set guifont=Consolas:h12:cANSI:qDRAFT
 if has("win32")
   set runtimepath^=~/.vim/
 endif
-
-" Extract variable from complete path
-" %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
-inoreabbrev nowd <C-R>=strftime('%Y-%m-%d')<C-M>
-nnoremap <localleader><> :%s/&lt;/</g<cr>:%s/&gt;/>/g<cr>
