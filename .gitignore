@@ -1,4 +1,4 @@
 bundle/
 vim80/
 *.swp
-/plugin/vim-generateDocumentType/tests
+/plugin/webMethods/vim-generateDocumentType/tests
