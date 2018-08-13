@@ -42,7 +42,7 @@ Plugin 'morhetz/gruvbox'
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-
+Plugin 'tpope/vim-fugitive'
 
 " Not shure I like it !
 " Collection of language packs for Vim
@@ -53,7 +53,6 @@ Plugin 'powerline/powerline'
 " TODO:
 " extended search and replace
 "Plugin 'tpope/vim-abolish'
-Plugin 'tpope/vim-fugitive'
 
 "color scheme
 Plugin 'Ardakilic/vim-tomorrow-night-theme'
@@ -631,9 +630,13 @@ augroup configgroup
     autocmd BufEnter Makefile setlocal noexpandtab
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
-    autocmd BufEnter *.txt setlocal softtabstop=2
-    autocmd BufEnter *.txt setlocal tabstop=2
-    autocmd BufEnter *.txt setlocal shiftwidth=2
+    autocmd BufEnter *.txt setlocal noexpandtab
+    autocmd BufEnter *.txt setlocal softtabstop=8
+    autocmd BufEnter *.txt setlocal tabstop=8
+    autocmd BufEnter *.txt setlocal shiftwidth=8
+"   autocmd BufEnter *.txt setlocal softtabstop=2
+"   autocmd BufEnter *.txt setlocal tabstop=2
+"   autocmd BufEnter *.txt setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
 
@@ -691,6 +694,7 @@ nnoremap <c-x> :bn\|bd#<cr>
 
 " Extract variable from complete path
 " %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
-"
 
 set mouse=a
+inoreabbrev nowd <C-R>=strftime('%Y-%m-%d')<C-M>
+nnoremap <localleader><> :%s/&lt;/</g<cr>:%s/&gt;/>/g<cr>
