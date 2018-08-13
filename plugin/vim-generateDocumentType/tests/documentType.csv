@@ -1,9 +1,0 @@
-# name : documentTypeName
-# package : AdeoArtMagStkToOpusenrichmentApp
-# savingDirectory : ./tests/
-#depth	name	type	mandatory	recordReferenceName
-0;root;record;true;root;
-1;doc1;record;true;doc1;
-2;val1;string;true;;
-2;val2;string;true;;
-1;val3;string;true;;
