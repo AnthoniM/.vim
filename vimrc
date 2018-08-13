@@ -14,6 +14,7 @@ Plugin 'ternjs/tern_for_vim'
 "Plugin 'Valloric/YouCompleteMe'
 "Utility
 Plugin 'scrooloose/nerdtree'
+Plugin 'ivalkeen/nerdtree-execute'
 Plugin 'AnthoniM/vim-autoclose'
 "fzf : fuzzy finder
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
