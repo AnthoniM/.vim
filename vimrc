@@ -14,6 +14,7 @@ Plugin 'ternjs/tern_for_vim'
 "Plugin 'Valloric/YouCompleteMe'
 "Utility
 Plugin 'scrooloose/nerdtree'
+Plugin 'ivalkeen/nerdtree-execute'
 Plugin 'AnthoniM/vim-autoclose'
 "fzf : fuzzy finder
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -38,7 +39,7 @@ Plugin 'tpope/vim-commentary'
 Plugin 'leafgarland/typescript-vim'
 "Plugin 'HerringtonDarkholme/yats.vim'
 Plugin 'morhetz/gruvbox'
-
+Plugin 'Valloric/YouCompleteMe'
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -284,6 +285,7 @@ augroup END
 augroup statements_shortcuts
     autocmd!
     autocmd FileType python         nnoremap <F5> :!pkill -f %<cr>:silent exec "!/usr/bin/python3 % &"<cr>
+    autocmd FileType javascript         nnoremap <F5> :new|0read !node #
     " if
     autocmd FileType python         :inoreabbrev <buffer> iff if:<left>
     autocmd FileType javascript,cpp :inoreabbrev <buffer> iff if ()<cr>{<cr>}<esc>2k%%a
@@ -688,9 +690,23 @@ endif
 inoremap dfj <cr><esc>O
 inoremap dfl <right>
 inoremap dfh <left>
+inoremap ;; <esc>l:call <SID>TerminateLine()<cr>i
+nnoremap ;; :call <SID>TerminateLine()<cr>
+
+function! s:TerminateLine()
+  let [row, column] = getcurpos()[1:2]
+  let line = getline('.')
+  if line[-1:] == ';'
+    call setline(row, line[:-2])
+  else
+    call setline(row, line.';')
+  endif
+  call cursor(row, column)
+endfunction
 
 "Delete buffer
 nnoremap <c-x> :bn\|bd#<cr>
+nnoremap <c-x><c-x> :bn\|bd!#<cr>
 
 " Extract variable from complete path
 " %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
