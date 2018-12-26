@@ -41,7 +41,6 @@ Plugin 'tpope/vim-commentary'
 Plugin 'leafgarland/typescript-vim'
 "Plugin 'HerringtonDarkholme/yats.vim'
 Plugin 'morhetz/gruvbox'
-Plugin 'Valloric/YouCompleteMe'
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
