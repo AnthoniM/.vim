@@ -11,7 +11,9 @@ Plugin 'VundleVim/Vundle.vim'
 "Tern
 Plugin 'ternjs/tern_for_vim'
 "YouCompleteMe
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'mgedmin/python-imports.vim'
+Plugin 'ludovicchabant/vim-gutentags'
 "Utility
 Plugin 'scrooloose/nerdtree'
 Plugin 'ivalkeen/nerdtree-execute'
@@ -20,7 +22,7 @@ Plugin 'AnthoniM/vim-autoclose'
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
 "syntastic : syntax errors
-"Plugin 'vim-syntastic/syntastic'
+Plugin 'vim-syntastic/syntastic'
 "snipmate
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
@@ -83,6 +85,9 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+let g:syntastic_python_checkers = ['flake8', 'PyFlakes', 'Pylint', 'python']
+
+
 " Brief help
 " :PluginList       - lists configured plugins
 " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
@@ -136,10 +141,10 @@ let g:fzf_layout = { 'down': '~40%' }
 
 " Vim-Airline Configuration
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1 
+let g:airline_powerline_fonts = 1
 let g:airline_theme='hybrid'
 let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 1 
+let g:hybrid_reduced_contrast = 1
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -177,7 +182,7 @@ omap <leader><tab> <plug>(fzf-maps-o)
 nnoremap <leader>v "+p
 
 " Shortcuts
-nnoremap <leader>o :Files<CR> 
+nnoremap <leader>o :Files<CR>
 nnoremap <leader>O :CtrlP<CR>
 nnoremap <leader>w :w<CR>
 
@@ -231,7 +236,7 @@ nnoremap <leader>w mq:match Error /\v\S.\zs\s+$/<cr>`q
 " Unmatch trailing whitespace
 nnoremap <leader>W :match none<cr>
 " Delete trailing whitespace
-nnoremap <leader>dw mq:%s/\v\s+$//ge<cr>`q
+nnoremap <leader>dw mq:%s/\v\s+$//ge<cr>:noh<cr>`q
 " Use very-magic search option by default
 " nnoremap / /\v
 " Stop highlighting items for the last search
@@ -284,8 +289,11 @@ augroup END
 "{{{
 augroup statements_shortcuts
     autocmd!
+    autocmd FileType python         set textwidth=80
     autocmd FileType python         nnoremap <F5> :!pkill -f %<cr>:silent exec "!/usr/bin/python3 % &"<cr>
     autocmd FileType javascript         nnoremap <F5> :new|0read !node #
+    autocmd FileType python         noremap <F4>    :ImportName<CR>
+    autocmd FileType python         noremap <C-F4>  :ImportNameHere<CR>
     " if
     autocmd FileType python         :inoreabbrev <buffer> iff if:<left>
     autocmd FileType javascript,cpp :inoreabbrev <buffer> iff if ()<cr>{<cr>}<esc>2k%%a
@@ -566,6 +574,15 @@ nnoremap k gk
 "nnoremap b ^
 "nnoremap e $
 
+" Moving between split windows
+"nnoremap <C-J> <C-W><C-J>
+"nnoremap <C-K> <C-W><C-K>
+"nnoremap <C-L> <C-W><C-L>
+"nnoremap <C-H> <C-W><C-H>
+
+set splitbelow
+set splitright
+
 " $/^ doesn't  do anything
 nnoremap ^ <nop>
 nnoremap $ <nop>
@@ -673,8 +690,8 @@ nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 
 " Deactivate bells
-set noerrorbells 
-set visualbell 
+set noerrorbells
+set visualbell
 set t_vb=
 
 " Format single line xml/html files
@@ -708,9 +725,7 @@ endfunction
 nnoremap <c-x> :bn\|bd#<cr>
 nnoremap <c-x><c-x> :bn\|bd!#<cr>
 
-" Extract variable from complete path
-" %s/%[^%]\+[:/]\([^:/%]\+\)%/%\1%/g
-
 set mouse=a
+
 inoreabbrev nowd <C-R>=strftime('%Y-%m-%d')<C-M>
-nnoremap <localleader><> :%s/&lt;/</g<cr>:%s/&gt;/>/g<cr>
+
