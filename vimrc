@@ -729,3 +729,11 @@ set mouse=a
 
 inoreabbrev nowd <C-R>=strftime('%Y-%m-%d')<C-M>
 
+function! FindAll()
+    call inputsave()
+    let p = input('Enter pattern:')
+    call inputrestore()
+    execute 'vimgrep "'.p.'" % |copen'
+endfunction
+
+nnoremap <F8> :call FindAll()<cr>
