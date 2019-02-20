@@ -677,7 +677,7 @@ set visualbell
 set t_vb=
 
 " Format single line xml/html files
-nnoremap <c-f> :%s/></>\r</ge<cr>:%s/\(\w\+\)>\zs$\n\ze<\/\1//ge<cr>gg=G<cr>
+nnoremap <c-f> :%s#<c-v><c-m>##ge<cr>:%s#><#>\r<#ge<cr>:%s#<\(\w\+\) *[^>]*>\zs$\n\s*\s*\ze</\1##ge<cr>gg=G<cr>
 
 " Set default font size
 set guifont=Consolas:h12:cANSI:qDRAFT
