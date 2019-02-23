@@ -7,66 +7,66 @@ call vundle#begin()
 " Let Vundle manage itself
 Plugin 'VundleVim/Vundle.vim'
 
-"Plugins
+" Track the engine.
+Plugin 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+
+" *JavaScript*
 "Tern
 Plugin 'ternjs/tern_for_vim'
-"YouCompleteMe
-Plugin 'Valloric/YouCompleteMe'
+
+" ES2015 code snippets (Optional)
+Plugin 'epilande/vim-es2015-snippets'
+
+" React code snippets
+Plugin 'epilande/vim-react-snippets'
+
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+
+" *Python*
+" Import
 Plugin 'mgedmin/python-imports.vim'
 Plugin 'ludovicchabant/vim-gutentags'
+
+"YouCompleteMe
+Plugin 'Valloric/YouCompleteMe'
+
 "Utility
 Plugin 'scrooloose/nerdtree'
 Plugin 'ivalkeen/nerdtree-execute'
 Plugin 'AnthoniM/vim-autoclose'
+Plugin 'AnthoniM/vim-tag'
+Plugin 'AnthoniM/vim-comment'
+
+"Git
+Plugin 'tpope/vim-fugitive'
+
 "fzf : fuzzy finder
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
-"syntastic : syntax errors
+
+"Syntax
 Plugin 'vim-syntastic/syntastic'
-"snipmate
+Plugin 'leafgarland/typescript-vim'
+
+"Other
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-" Optional:
-Plugin 'AnthoniM/vim-snippets'
-Plugin 'AnthoniM/vim-tag'
-Plugin 'AnthoniM/vim-comment'
-"vimfiler depends on unite.vim
-Plugin 'Shougo/vimfiler.vim'
-"unite.vim
-Plugin 'Shougo/unite.vim'
-"comment
-Plugin 'tpope/vim-commentary'
-"syntax
-Plugin 'leafgarland/typescript-vim'
-"Plugin 'HerringtonDarkholme/yats.vim'
-Plugin 'morhetz/gruvbox'
+
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-fugitive'
-
-" Not shure I like it !
-" Collection of language packs for Vim
-"Plugin 'sheerun/vim-polyglot'
-"statusbar plugin
-Plugin 'powerline/powerline'
-
-" TODO:
-" extended search and replace
-"Plugin 'tpope/vim-abolish'
 
 "color scheme
 Plugin 'Ardakilic/vim-tomorrow-night-theme'
+Plugin 'morhetz/gruvbox'
+
 call vundle#end()
+
 filetype plugin indent on
-
-"to prevent clash with youcompleteme, change snippet trigger
-imap <C-J> <Plug>snipMateNextOrTrigger
-smap <C-J> <Plug>snipMateNextOrTrigger
-
-" set vimfiler as the default explorer
-let g:vimfiler_as_default_explorer = 1
 
 "
 " Show ASCII/Unicode values in the status line
@@ -84,29 +84,14 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-let g:syntastic_python_checkers = ['flake8', 'PyFlakes', 'Pylint', 'python']
-let g:syntastic_quiet_messages = {'regex': 'E501\|E231'}
+let g:syntastic_javascript_checkers = ['eslint']
+"let g:syntastic_python_checkers = ['flake8', 'PyFlakes', 'Pylint', 'python']
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_quiet_messages = {'regex': 'E501\|E231\|W291\|E999'}
 
-
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-"echo ">^.^<"
-"command MAKE execute "w|!bash ./gen_pdf.sh"
-"command SHOW execute "!evince %:r.pdf &"
-"command SAVE execute "w|make all"
-"command SDRAFT execute "w|make draft"
-"""""""""""""""""""""""""""""""""""""
-" Configuration Section
-"""""""""""""""""""""""""""""""""""""
 " AutoClose configuration
 let g:AutoCloseExpandEnterOn = 1
+
 " Fzf Configuration
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -139,6 +124,21 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 " - down / up / left / right
 let g:fzf_layout = { 'down': '~40%' }
 
+" Mapping selecting Mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+nnoremap <leader>o :Files<CR>
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+let g:jsx_ext_required = 0
+
 " Vim-Airline Configuration
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
@@ -153,6 +153,16 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+"inoremap <Tab> <c-r>=UltiSnips#ExpandSnippet()<cr>
+let g:UltiSnipsExpandTrigger="<c-l>"
+let g:UltiSnipsJumpForwardTrigger=">"
+let g:UltiSnipsJumpBackwardTrigger="<"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
 """""""""""""""""""""""""""""""""""""
 " Mappings configurationn
 """""""""""""""""""""""""""""""""""""
@@ -160,40 +170,25 @@ map <C-n> :NERDTreeToggle<CR>
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
-"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-"function! s:my_cr_function()
-" return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-" " For no inserting <CR> key.
-" "return pumvisible() ? "\<C-y>" : "\<CR>"
-"endfunction
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
 
 " Right displacement to exit closed ()
 inoremap <c-l> <right>
 
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-" Mapping selecting Mappings
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " Paste from clipboard
 nnoremap <leader>v "+p
-
-" Shortcuts
-nnoremap <leader>o :Files<CR>
-nnoremap <leader>O :CtrlP<CR>
+" Save current buffer
 nnoremap <leader>w :w<CR>
 
-" Insert mode completion
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
-
-nnoremap <leader>@@ :%s/\(^\s*\)\@<!\zs\s*{\ze$\n\(.*\n\)\=\(\s\+\)}/\r\3{/g<cr>
-nnoremap <leader>@@@ :%s/\S\+\zs\s*\n\s\+{.*$/ {/g
 " leader Shortcuts
 "{{{
 let mapleader="," "leader is comma
@@ -229,48 +224,35 @@ nnoremap <Left> <nop>
 nnoremap <Right> <nop>
 nnoremap <Up> <nop>
 nnoremap <Down> <nop>
-" Autosave new files
-"autocmd BufNewFile * :write
-" Match trailing whitespace
-nnoremap <leader>w mq:match Error /\v\S.\zs\s+$/<cr>`q
-" Unmatch trailing whitespace
-nnoremap <leader>W :match none<cr>
+
+" $/^ doesn't  do anything
+"nnoremap ^ <nop>
+"nnoremap $ <nop>
+
+
 " Delete trailing whitespace
 nnoremap <leader>dw mq:%s/\v\s+$//ge<cr>:noh<cr>`q
-" Use very-magic search option by default
-" nnoremap / /\v
+
 " Stop highlighting items for the last search
 nnoremap <leader>/ :nohlsearch<cr>
 vnoremap <leader>/ :nohlsearch<cr>
-" Move trough search and visually select results
-"vnoremap n ungn
-"vnoremap N uNgN
+
 " }}}
 
 " operator-pending mappings
 "{{{
-"Defines p and parenthesis operator pending
+"Defines p
 onoremap p i(
-"in/around next/last single quotes
-onoremap in' :<c-u>normal! f'vi'<cr>
-onoremap il' :<c-u>normal! F'vi'<cr>
-onoremap an' :<c-u>normal! f'va'<cr>
-onoremap al' :<c-u>normal! F'va'<cr>
-"in/around next/last double quotes
-onoremap in" :<c-u>normal! f"vi"<cr>
-onoremap il" :<c-u>normal! F"vi"<cr>
-onoremap an" :<c-u>normal! f"va"<cr>
-onoremap al" :<c-u>normal! F"va"<cr>
-"in/around next/last parenthesis
-onoremap in( :<c-u>normal! f(vi(<cr>
-onoremap il( :<c-u>normal! F)vi(<cr>
-onoremap an( :<c-u>normal! f(va(<cr>
-onoremap al( :<c-u>normal! F)va(<cr>
-"in/around next/last curly brackets
-onoremap in{ :<c-u>normal! f{vi{<cr>
-onoremap il{ :<c-u>normal! F}vi{<cr>
-onoremap an{ :<c-u>normal! f{va{<cr>
-onoremap al{ :<c-u>normal! F}va{<cr>
+vnoremap p i(
+
+onoremap is i'
+vnoremap is i'
+
+onoremap iq i"
+vnoremap iq i"
+
+onoremap ic i{
+vnoremap ic i{
 " }}}
 
 " File layout
@@ -289,41 +271,11 @@ augroup END
 "{{{
 augroup statements_shortcuts
     autocmd!
-    autocmd FileType python         set textwidth=80
     autocmd FileType python         nnoremap <F5> :!pkill -f %<cr>:silent exec "!/usr/bin/python3 % &"<cr>
-    autocmd FileType javascript         nnoremap <F5> :new|0read !node #
     autocmd FileType python         noremap <F4>    :ImportName<CR>
     autocmd FileType python         noremap <C-F4>  :ImportNameHere<CR>
-    " if
-    autocmd FileType python         :inoreabbrev <buffer> iff if:<left>
-    autocmd FileType javascript,cpp :inoreabbrev <buffer> iff if ()<cr>{<cr>}<esc>2k%%a
-    " else
-    autocmd FileType python :inoreabbrev <buffer> el <cr>else:<cr><left>
-    " else if
-    autocmd FileType python :inoreabbrev <buffer> elif <cr>elif:<left>
-    " for
-    autocmd FileType python     :inoreabbrev <buffer> forr for in :<esc>Tri
-    autocmd FileType javascript :inoreabbrev <buffer> forr for (;;)<cr><esc>2k%%a
-    autocmd FileType cpp        :inoreabbrev <buffer> forr for (;;)<cr>{<cr>}<esc>2k%%a
-    " return
-    autocmd FileType python,vim     :inoreabbrev <buffer> ret return
-    autocmd FileType javascript,cpp :inoreabbrev <buffer> ret return ;<left>
-    " functions
-    "autocmd FileType python     :inoreabbrev <buffer> def def:<left>
-    autocmd FileType javascript :inoreabbrev <buffer> func function()<cr>{<cr>}<esc>2kLi
-    autocmd FileType cpp        :inoreabbrev <buffer> func function()<cr>{<cr>}<esc>2kLi
-"     semicolon
-    autocmd FileType javascript,cpp,php :nnoremap <buffer> <localleader>; mqA;<esc>`q
-augroup END
 "}}}
 
-" Code to purify taken from examples
-augroup learnvimthehardway
-    autocmd!
-    " Double quotations
-    autocmd FileType html,htm :iabbrev <buffer> dq &ldquo;<cr>&rdquo;jkO
-    autocmd FileType html,htm :iabbrev <buffer> ,p <p><cr></p>jkko
-augroup END
 augroup filetype_html
     " Fold group, works if foldmethod=manual
     autocmd!
@@ -341,153 +293,8 @@ augroup filetype_vim
     autocmd BufWritePost .vimrc source %
     " make folds work with {{{ }}} markers
     autocmd FileType vim setlocal foldmethod=marker
-    " if
-    autocmd FileType vim :inoreabbrev <buffer> iff if<cr>endif<esc>kA
-    " else
-    autocmd FileType vim :inoreabbrev <buffer> el else<cr><left>
-    " else if
-    autocmd FileType vim :inoreabbrev <buffer> elif elseif
-    " for
-    autocmd FileType vim :inoreabbrev <buffer> forr for in <cr>endfor<esc>k0tii
-    " while
-    autocmd FileType vim :inoreabbrev <buffer> whil while<cr>endwhile<esc>kA
-    " functions
-    autocmd FileType vim :inoreabbrev <buffer> func function!()<cr>endfunction<esc>:execute "normal! k0t("<cr>a
-    " return
-    autocmd filetype vim :inoreabbrev <buffer> ret return
-    " try
-    autocmd filetype vim :inoreabbrev <buffer> tryy try<cr>endtry<esc>O
 augroup END
 "}}}
-
-" PHP file settings
-"{{{
-"augroup filetype_php
-"   autocmd!
-"     html heredoc
-"   autocmd FileType php :inoreabbrev <buffer> hhtml <esc>ciwecho <<<_HTML<cr><esc>ciw_HTML;<esc>O
-"               \<c-r>=Eatchar('\s')<cr>
-"     SQL heredoc
-"   autocmd FileType php :inoreabbrev <buffer> hsql <esc>ciwecho <<<_SQL<cr><esc>ciw_SQL;<esc>O
-"               \<c-r>=Eatchar('\s')<cr>
-"     if
-"   autocmd filetype php :inoreabbrev <buffer> sif if ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
-"   autocmd filetype php :inoreabbrev <buffer> isif if () ;<esc>T)hi<c-r>=Eatchar('\s')<cr>
-"   " else
-"   autocmd FileType php :inoreabbrev <buffer> sel else<cr>{<cr>}<esc>O
-"   autocmd FileType php :inoreabbrev <buffer> isel else ;<left>
-"   " else if
-"   autocmd FileType php :inoreabbrev <buffer> selif elseif ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
-"   " for
-"   autocmd FileType php :inoreabbrev <buffer> sfor for (;;)<cr>{<cr>}<esc>kk0t)%a<c-r>=Eatchar('\s')<cr>
-"   " foreach
-"   autocmd FileType php :inoreabbrev <buffer> sfore foreach ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
-"   autocmd FileType php :inoreabbrev <buffer> isfore foreach
-"               \ () ;<esc>
-"               \T)hi
-"               \<c-r>=Eatchar('\s')<cr>
-"   " while
-"   autocmd FileType php :inoreabbrev <buffer> swhile while ()<cr>{<cr>}<esc>kk0t)a<c-r>=Eatchar('\s')<cr>
-"   " do...while
-"   autocmd FileType php :inoreabbrev <buffer> sdo do{<cr>}while()<esc>i<c-r>=Eatchar('\s')<cr>
-"   " functions
-"   autocmd FileType php :inoreabbrev <buffer> sfunc function ()<cr>{<cr>}<esc>kk0t)i<c-r>=Eatchar('\s')<cr>
-"     isset
-"   autocmd FileType php :inoreabbrev <buffer> iss isset()<left><c-r>=Eatchar('\s')<cr>
-"     Associative arrays
-"   let s:associative_arrays = ['post',
-"                              \'get',
-"                              \'session',
-"                              \'server']
-"   autocmd FileType php :inoreabbrev <buffer> _post $_POST[]<left><c-r>=Eatchar('\s')<cr>
-"   for i in s:associative_arrays
-"       call InsertAssocArray(i)
-"   endfor
-"     return
-"   autocmd filetype php :inoreabbrev <buffer> ret return ;<left>
-"     setcookie
-"   autocmd filetype php :inoreabbrev <buffer> setcookie setcookie(name, value, expire, path, domain, secure, httponly);<esc>
-"               \:execute '/\%'.line(".").'l\v(\(\|,\s)\zs\w+\ze(,\|\);)'<cr>
-"               \ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"     mysqli
-"   autocmd filetype php :inoreabbrev <buffer> mysqli mysqli(hostname, username, password, database);<esc>
-"               \:execute '/\%'.line(".").'l\v(\(\|,\s)\zs\w+\ze(,\|\);)'<cr>
-"               \ngn
-"               \<c-r>=Eatchar('\s')<cr>
-"
-"augroup END
-"}}}
-
-" JAVASCRIPT file settings
-"{{{
-augroup filetype_javascript
-    autocmd!
-    " with
-    autocmd FileType javascript,html :inoreabbrev <buffer> swith with ()<cr>{<cr>}<esc>
-                \2k$i
-                \<c-r>=Eatchar('\s')<cr>
-    " if
-    autocmd FileType javascript,html :inoreabbrev <buffer> sif if ()<cr>{<cr>}<esc>2k$i
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType javascript,html :inoreabbrev <buffer> isif if () <esc>2ha
-                \<c-r>=Eatchar('\s')<cr>
-    " else
-    autocmd FileType javascript,html :inoreabbrev <buffer> sel else<cr>{<cr>}<esc>O
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType javascript,html :inoreabbrev <buffer> isel else <esc>i
-                \<c-r>=Eatchar('\s')<cr>
-    " else if
-    autocmd FileType javascript,html :inoreabbrev <buffer> selif else if ()<cr>{<cr>}<esc>2k$i
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType javascript,html :inoreabbrev <buffer> iselif else if () <esc>hi
-                \<c-r>=Eatchar('\s')<cr>
-    " while
-    autocmd filetype javascript,html :inoreabbrev <buffer> swhile while ()<cr>{<cr>}<esc>2k$i
-                \<c-r>=Eatchar('\s')<cr>
-    " do...while
-    autocmd filetype javascript,html :inoreabbrev <buffer> sdowhile do<cr>{<cr>} while ()<left>
-                \<c-r>=Eatchar('\s')<cr>
-    " for
-    autocmd filetype javascript,html :inoreabbrev <buffer> sfor for (i = 0; i < 5; ++i)<cr>{<cr>}<esc>
-                \2k
-                \:execute '/\%'.line(".").'l\v(i \= 0\ze;\|i \< 5\ze;\|\+\+i\ze\))'<cr>
-                \gn
-                \<c-r>=Eatchar('\s')<cr>
-    " return
-    autocmd FileType javascript,html :inoreabbrev <buffer> ret return
-    " functions
-    autocmd FileType javascript,html :inoreabbrev <buffer> sfunction function ()<cr>{<cr>}<esc>2k$hi
-                \<c-r>=Eatchar('\s')<cr>
-    autocmd FileType javascript,html :inoreabbrev <buffer> isfunction function(){}<esc>2hi
-                \<c-r>=Eatchar('\s')<cr>
-    " switch
-    autocmd FileType javascript,html :inoreabbrev <buffer> sswitch switch ()<cr>{<cr>}<esc>2k$i
-                \<c-r>=Eatchar('\s')<cr>
-    " case
-    autocmd FileType javascript,html :inoreabbrev <buffer> scase case :<cr>break<esc>k$i
-                \<c-r>=Eatchar('\s')<cr>
-    " default
-    autocmd FileType javascript,html :inoreabbrev <buffer> sdefault default:<cr>break<esc>k$i
-                \<c-r>=Eatchar('\s')<cr>
-    " ternary ?
-    autocmd FileType javascript,html :inoreabbrev <buffer> sq cond ? yes : non<esc>16h
-                \:execute '/\%'.line(".").'l\v(cond\ze \?\|\? \zsyes\|: \zsnon)'<cr>
-                \gn
-                \<c-r>=Eatchar('\s')<cr>
-    " semicolon
-    autocmd FileType javascript,html,php :nnoremap <buffer> <localleader>; mqA;<esc>`q
-"   autocmd BufRead *.js set filetype=htmlm4
-augroup END
-"}}}
-
-"
-" Abbreviations
-"
-" Email
-iabbrev @@@ anthonimanseau@gmail.com
-" Signature
-iabbrev ssig --<cr>Anthoni Manseau<cr>anthonimanseau@gmail.com
 
 " Set $MYVIMRC
 let $MYVIMRC='~/.vim/vimrc'
@@ -513,7 +320,6 @@ syntax enable " enable syntax processing
 nnoremap <silent> <F7> "<Esc>:silent setlocal spell! spelllang=en<CR>"
 nnoremap <silent> <F6> "<Esc>:silent setlocal spell! spelllang=fr<CR>"
 
-
 "
 " Space & Tabs
 "
@@ -528,7 +334,6 @@ set formatoptions+=r " automatically insert comment character at beginning of li
 "
 " UI Config
 "
-
 set number " show line numbers
 set showcmd "show command in bottom bar
 set cursorline " hightlight current line
@@ -583,18 +388,8 @@ nnoremap k gk
 set splitbelow
 set splitright
 
-" $/^ doesn't  do anything
-nnoremap ^ <nop>
-nnoremap $ <nop>
-
 " highlight last inserted text
 nnoremap gV `[V`]
-
-" tuggle gundo
-nnoremap <leader>u :GundoToggle<cr>
-
-" save session / reopen it with 'vim -S'
-nnoremap <leader>s :mksession<cr>
 
 "Enable HTML syntax highlighting inside strings: >
 let php_htmlInStrings = 1
@@ -605,23 +400,6 @@ set smartcase
 "set default colorscheme
 colorscheme gruvbox
 set background=dark
-
-"
-" Launch Config
-"
-
-"call pathogen#infect() " use pathogen
-"call pathogen#runtime_append_all_bundles() " use pathogen
-
-"
-" Tern
-"
-
-"enable keyboard shortcuts
-let g:term_map_keys=1
-"show argument hints
-let g:tern_show_argument_hints='on_hold'
-
 
 "
 " Autogroups
@@ -644,7 +422,6 @@ augroup configgroup
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
     autocmd FileType python setlocal commentstring=#\ %s
-    "autocmd BufEnter *.cls setlocal filetype=java
     autocmd BufEnter *.zsh-theme setlocal filetype=zsh
     autocmd BufEnter Makefile setlocal noexpandtab
     autocmd BufEnter *.sh setlocal tabstop=2
@@ -737,3 +514,5 @@ function! FindAll()
 endfunction
 
 nnoremap <F8> :call FindAll()<cr>
+
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
