@@ -68,6 +68,9 @@ call vundle#end()
 
 filetype plugin indent on
 
+scriptencoding uft-8
+set fileencoding=uft-8
+
 "
 " Show ASCII/Unicode values in the status line
 "
@@ -523,12 +526,6 @@ function! s:StringifyXML()
   execute ":%s#&#\\&amp;#g"
 endfunction
 
-
-set list
-set listchars=tab:»-,space:·,trail:·,eol:¬,extends:…,precedes:…
-
-set encoding=utf-8
-
 function! FindAll()
     call inputsave()
     let p = input('Enter pattern:')
@@ -537,5 +534,7 @@ function! FindAll()
 endfunction
 
 nnoremap <F8> :call FindAll()<cr>
+
+set list
 
 set listchars=tab:Â»\ ,extends:â€º,precedes:â€¹,nbsp:Â·,trail:Â·
