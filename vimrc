@@ -472,7 +472,7 @@ set visualbell
 set t_vb=
 
 " Format single line xml/html files
-nnoremap <c-f> :%s/></>\r</ge<cr>:%s/\(\w\+\)>\zs$\n\ze<\/\1//ge<cr>gg=G<cr>
+nnoremap <c-f> :%s#<c-v><c-m>##ge<cr>:%s#><#>\r<#ge<cr>:%s#<\(\w\+\) *[^>]*>\zs$\n\s*\s*\ze</\1##ge<cr>gg=G<cr>
 
 " Set default font size
 set guifont=Consolas:h12:cANSI:qDRAFT
@@ -505,6 +505,29 @@ nnoremap <c-x><c-x> :bn\|bd!#<cr>
 set mouse=a
 
 inoreabbrev nowd <C-R>=strftime('%Y-%m-%d')<C-M>
+inoreabbrev nowt <C-R>=strftime('%Y%m%d%H%M%S000')<C-M>
+
+command! PurifyXML call <SID>Purify()
+function! s:Purify()
+  execute ":%s#&amp;#\\&#g"
+  execute ":%s#&lt;#<#g"
+  execute ":%s#&gt;#>#g"
+  execute ":%s#&quot;#\"#g"
+endfunction
+
+command! StringifyXML call <SID>StringifyXML()
+function! s:StringifyXML()
+  execute ":%s#<#\\&lt;#g"
+  execute ":%s#>#\\&gt;#g"
+  execute ":%s#\"#\\&quot;#g"
+  execute ":%s#&#\\&amp;#g"
+endfunction
+
+
+set list
+set listchars=tab:»-,space:·,trail:·,eol:¬,extends:…,precedes:…
+
+set encoding=utf-8
 
 function! FindAll()
     call inputsave()
