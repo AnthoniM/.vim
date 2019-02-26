@@ -537,4 +537,4 @@ nnoremap <F8> :call FindAll()<cr>
 
 set list
 
-set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
+set listchars=tab:»\ ,space:·,extends:›,precedes:‹,nbsp:·,trail:·
