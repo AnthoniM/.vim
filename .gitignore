@@ -2,3 +2,4 @@ bundle/
 vim80/
 *.sw*
 plugin/webMethods/vim-generateDocumentType/
+tags
