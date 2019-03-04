@@ -39,7 +39,53 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'ivalkeen/nerdtree-execute'
 Plugin 'AnthoniM/vim-autoclose'
 Plugin 'AnthoniM/vim-tag'
-Plugin 'AnthoniM/vim-comment'
+
+" Surround operations : 
+" Add surround with motion : ys<char>
+" Change surround : cs<old><new>
+" Delete surround : ds<char>
+Plugin 'tpope/vim-surround'
+
+" Comment lines with motion : gc / gcc
+Plugin 'tpope/vim-commentary'
+
+" Replace with register with motion : gr / grr
+Plugin 'vim-scripts/ReplaceWithRegister'
+
+" Title case with motion : gt / gT
+Plugin 'christoomey/vim-titlecase'
+
+" Sorting command with motion : gs
+Plugin 'christoomey/vim-sort-motion'
+
+" Map copy/paste to the OS clipboard with motion : cs /cP (current line)
+Plugin 'christoomey/vim-system-copy'
+
+" Define indent object
+" ai: An Indentation level and line above.
+" ii: Inner Indentation level (no line above).
+" aI: An Indentation level and lines above/below.
+" iI: Inner Indentation level (no lines above/below).
+Plugin 'michaeljsmith/vim-indent-object'
+" Create text object to target the entire content of the buffer : 
+" ae
+" ie : does not include leading and trailing empty lines
+Plugin 'kana/vim-textobj-user'
+Plugin 'kana/vim-textobj-entire'
+" motion through camelCase : i,w
+Plugin 'bkad/CamelCaseMotion'
+" Provide a text object 'a' (argument)
+Plugin 'vim-scripts/argtextobj.vim'
+
+" Util shortcuts
+Plugin 'tpope/vim-unimpaired'
+
+" To repeat plugin commands
+Plugin 'tpope/vim-repeat'
+
+" To modify dates
+" Plugin 'tpope/vim-speeddating'
+
 
 "Git
 Plugin 'tpope/vim-fugitive'
@@ -66,10 +112,7 @@ Plugin 'morhetz/gruvbox'
 
 call vundle#end()
 
-filetype plugin indent on
-
-scriptencoding uft-8
-set fileencoding=uft-8
+call camelcasemotion#CreateMotionMappings('<leader>')
 
 "
 " Show ASCII/Unicode values in the status line
@@ -78,9 +121,9 @@ set statusline=%<%f%h%m%r%=%b\ 0x%B\ \ %l,%c%V\ %P
 set laststatus=2
 
 " recommended setup for syntastic
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -156,7 +199,6 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 "inoremap <Tab> <c-r>=UltiSnips#ExpandSnippet()<cr>
 let g:UltiSnipsExpandTrigger="<c-l>"
@@ -181,9 +223,6 @@ function! s:my_cr_function()
   "return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 
-" Right displacement to exit closed ()
-inoremap <c-l> <right>
-
 " <TAB>: completion.
 "inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
@@ -198,20 +237,15 @@ let mapleader="," "leader is comma
 let maplocalleader="," "localleader is comma
 " }}}
 
-" General Mappings
-"{{{
-" source current file
+" Source current file
 nnoremap <leader>so :source %<cr>
 " Move line down 1 row
 nnoremap - ddp
 " Move line up 1 row
 nnoremap _ ddkP
-" Remove a line
-"nnoremap \ dd
 " Uppercase word for constant declarations
 nnoremap <c-u> viwUw
 inoremap <c-u> <esc>viwUA
-
 "Move to the beginning/end of the current line
 nnoremap H 0
 nnoremap L $
@@ -227,66 +261,18 @@ nnoremap <Left> <nop>
 nnoremap <Right> <nop>
 nnoremap <Up> <nop>
 nnoremap <Down> <nop>
-
-" $/^ doesn't  do anything
-"nnoremap ^ <nop>
-"nnoremap $ <nop>
-
-
 " Delete trailing whitespace
 nnoremap <leader>dw mq:%s/\v\s+$//ge<cr>:noh<cr>`q
-
 " Stop highlighting items for the last search
 nnoremap <leader>/ :nohlsearch<cr>
 vnoremap <leader>/ :nohlsearch<cr>
 
-" }}}
-
-" operator-pending mappings
-"{{{
-"Defines p
-onoremap p i(
-vnoremap p i(
-
-onoremap is i'
-vnoremap is i'
-
-onoremap iq i"
-vnoremap iq i"
-
-onoremap ic i{
-vnoremap ic i{
-" }}}
-
-" File layout
-"{{{
-augroup file_layout
-    autocmd!
-    " html filetype
-    " Reindent prior to saving/reading
-    " autocmd BufWritePre,BufRead *.html :normal gg=G
-    " Set no wrap prior to saving/reading
-    autocmd BufWritePre,BufRead *.html setlocal nowrap
-augroup END
-"}}}
-
 " Coding statements shortcuts
-"{{{
 augroup statements_shortcuts
     autocmd!
     autocmd FileType python         nnoremap <F5> :!pkill -f %<cr>:silent exec "!/usr/bin/python3 % &"<cr>
-    autocmd FileType python         noremap <F4>    :ImportName<CR>
-    autocmd FileType python         noremap <C-F4>  :ImportNameHere<CR>
-"}}}
-
-augroup filetype_html
-    " Fold group, works if foldmethod=manual
-    autocmd!
-    autocmd FileType html nnoremap <buffer> <localleader>f Vatzf
-augroup END
 
 " Vimscript file settings
-"{{{
 augroup filetype_vim
     autocmd!
     " use the right syntax for single quote strings like ''''
@@ -294,23 +280,15 @@ augroup filetype_vim
     autocmd FileType vim :highlight link vimSingleQuoteString String
     " source .vimrc every time it is saved
     autocmd BufWritePost .vimrc source %
-    " make folds work with {{{ }}} markers
     autocmd FileType vim setlocal foldmethod=marker
+    set commentstring=\"\ %s
 augroup END
-"}}}
 
 " Set $MYVIMRC
 let $MYVIMRC='~/.vim/vimrc'
 "Open .vimrc in a vsplit
-:nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-:nnoremap <leader>eh :split $MYVIMRC<cr>
-:nnoremap <leader>ew :split $MYVIMRC<cr>:only<cr>
-"Source changed .vimrc
-:nnoremap <leader>sv :source $MYVIMRC<cr>
-:nnoremap <leader>vs :vsplit<cr>
-:nnoremap <leader>hs :split<cr>
-:nnoremap <leader>vn :vnew<cr>
-:nnoremap <leader>hn :new<cr>
+:nnoremap <leader>ev :vsplit $MYVIMRC<cr>:only<cr>
+:nnoremap <leader>eh :split $MYVIMRC<cr>:only<cr>
 
 "
 " Colors
@@ -323,10 +301,7 @@ syntax enable " enable syntax processing
 nnoremap <silent> <F7> "<Esc>:silent setlocal spell! spelllang=en<CR>"
 nnoremap <silent> <F6> "<Esc>:silent setlocal spell! spelllang=fr<CR>"
 
-"
 " Space & Tabs
-"
-
 set tabstop=2 " number of visual spaces per TAB
 set softtabstop=2 " number of spaces in tab when editing
 set expandtab " tabs are spaces
@@ -334,9 +309,7 @@ set shiftwidth=2
 set autoindent " this is a must
 set formatoptions+=r " automatically insert comment character at beginning of line
 
-"
 " UI Config
-"
 set number " show line numbers
 set showcmd "show command in bottom bar
 set cursorline " hightlight current line
@@ -348,45 +321,26 @@ set wildmode=longest:list,full
 set lazyredraw "redraw only when we need to
 set showmatch "highlight matching [{()}]
 
-"
 " Searching
-"
-
-set incsearch " search as characters ar e intered
+set incsearch " search as characters are intered
 set hlsearch " highlight matches
 
-" turn off search highlight
-nnoremap ,<space> :nohlsearch<CR>
-
-"
 " Folding
-"
-
 set foldenable
 set foldlevelstart=0 "open most folds by default
-set foldnestmax=10 " 10 mested fold max
-
+set foldnestmax=10 " 10 nested fold max
 nnoremap <space> za
-
 set foldmethod=indent " fold based on indent level
 
-"
 " Movement
-"
-
 " move vertically by visual line
 nnoremap j gj
 nnoremap k gk
-
-"move to beginning/end of line
-"nnoremap b ^
-"nnoremap e $
-
 " Moving between split windows
-"nnoremap <C-J> <C-W><C-J>
-"nnoremap <C-K> <C-W><C-K>
-"nnoremap <C-L> <C-W><C-L>
-"nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 set splitbelow
 set splitright
@@ -394,10 +348,11 @@ set splitright
 " highlight last inserted text
 nnoremap gV `[V`]
 
-"Enable HTML syntax highlighting inside strings: >
+"Enable HTML syntax highlighting inside strings:
 let php_htmlInStrings = 1
 
 " ignore case unless search with capital letters
+set ignorecase
 set smartcase
 
 "set default colorscheme
@@ -411,13 +366,9 @@ augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
     autocmd FileType java setlocal noexpandtab
-    autocmd FileType java setlocal list
-    autocmd FileType java setlocal listchars=tab:+\ ,eol:-
     autocmd FileType java setlocal formatprg=par\ -w80\ -T4
     autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
     autocmd FileType php setlocal expandtab
-    autocmd FileType php setlocal list
-    autocmd FileType php setlocal listchars=tab:+\ ,eol:-
     autocmd FileType php setlocal formatprg=par\ -w80\ -T4
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType ruby setlocal tabstop=2
@@ -433,27 +384,8 @@ augroup configgroup
     autocmd BufEnter *.txt setlocal softtabstop=8
     autocmd BufEnter *.txt setlocal tabstop=8
     autocmd BufEnter *.txt setlocal shiftwidth=8
-"   autocmd BufEnter *.txt setlocal softtabstop=2
-"   autocmd BufEnter *.txt setlocal tabstop=2
-"   autocmd BufEnter *.txt setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
 augroup END
-
-augroup markdown
-    autocmd!
-    autocmd Filetype markdown command! W w|! pandoc -s -o %:r.pdf %
-    autocmd Filetype markdown nnoremap <localleader>w :W<cr><cr>
-augroup END
-
-"
-" Backups
-"
-
-"set backup
-"set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-"set backupskip=/tmp/*,/private/tmp/*
-"set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-"set writebackup
 
 " Eat space when using iabbrev
 function! Eatchar(pat)
@@ -477,11 +409,14 @@ set t_vb=
 " Format single line xml/html files
 nnoremap <c-f> :%s#<c-v><c-m>##ge<cr>:%s#><#>\r<#ge<cr>:%s#<\(\w\+\) *[^>]*>\zs$\n\s*\s*\ze</\1##ge<cr>gg=G<cr>
 
-" Set default font size
-set guifont=Consolas:h12:cANSI:qDRAFT
 
-if has("win32")
+if has("win32") || has('win32unix')
   set runtimepath^=~/.vim/
+  scriptencoding utf-8
+  set encoding=utf-8
+  set fileencoding=uft-8
+  " Set default font size
+  set guifont=Consolas:h12:cANSI:qDRAFT
 endif
 
 inoremap dfj <cr><esc>O
@@ -510,22 +445,6 @@ set mouse=a
 inoreabbrev nowd <C-R>=strftime('%Y-%m-%d')<C-M>
 inoreabbrev nowt <C-R>=strftime('%Y%m%d%H%M%S000')<C-M>
 
-command! PurifyXML call <SID>Purify()
-function! s:Purify()
-  execute ":%s#&amp;#\\&#g"
-  execute ":%s#&lt;#<#g"
-  execute ":%s#&gt;#>#g"
-  execute ":%s#&quot;#\"#g"
-endfunction
-
-command! StringifyXML call <SID>StringifyXML()
-function! s:StringifyXML()
-  execute ":%s#<#\\&lt;#g"
-  execute ":%s#>#\\&gt;#g"
-  execute ":%s#\"#\\&quot;#g"
-  execute ":%s#&#\\&amp;#g"
-endfunction
-
 function! FindAll()
     call inputsave()
     let p = input('Enter pattern:')
@@ -536,7 +455,7 @@ endfunction
 nnoremap <F8> :call FindAll()<cr>
 
 set list
-
 set listchars=tab:»\ ,space:·,extends:›,precedes:‹,nbsp:·,trail:·
 
 let g:html_indent_inctags = "a,abbr,address,area,article,aside,audio,b,base,bdi,bdo,blockquote,body,br,button,canvas,caption,cite,code,col,colgroup,data,datalist,dd,del,details,dfn,dialog,div,dl,dt,em,embed,fieldset,figure,footer,form,h1,h2,h3,h4,h5,h6,head,header,hgroup,hr,html,i,iframe,img,input,ins,kbd,keygen,label,legend,li,link,main,map,mark,menu,menuitem,meta,meter,nav,noscript,object,ol,optgroup,option,output,p,param,pre,progress,q,rb,rp,rt,rtc,ruby,s,samp,script,section,select,small,source,span,strong,style,sub,summary,sup,table,tbody,td,template,textarea,tfoot,th,thead,time,title,tr,track,u,ul,var,video,wbr"
+
