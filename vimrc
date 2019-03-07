@@ -299,8 +299,8 @@ augroup END
 " Set $MYVIMRC
 let $MYVIMRC='~/.vim/vimrc'
 "Open .vimrc in a vsplit
-:nnoremap <leader>ev :vsplit $MYVIMRC<cr>:only<cr>
-:nnoremap <leader>eh :split $MYVIMRC<cr>:only<cr>
+:nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+:nnoremap <leader>eh :split $MYVIMRC<cr>
 
 "
 " Colors
