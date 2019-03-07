@@ -434,16 +434,18 @@ endif
 inoremap dfj <cr><esc>O
 inoremap dfl <right>
 inoremap dfh <left>
-inoremap ;; <esc>l:call <SID>TerminateLine()<cr>i
-nnoremap ;; :call <SID>TerminateLine()<cr>
+inoremap ;; <esc>l:call <SID>TerminateLine(';')<cr>i
+nnoremap ;; :call <SID>TerminateLine(';')<cr>
+inoremap ,, <esc>l:call <SID>TerminateLine(',')<cr>i
+nnoremap ,, :call <SID>TerminateLine(',')<cr>
 
-function! s:TerminateLine()
+function! s:TerminateLine(char)
   let [row, column] = getcurpos()[1:2]
   let line = getline('.')
-  if line[-1:] == ';'
+  if line[-1:] == a:char
     call setline(row, line[:-2])
   else
-    call setline(row, line.';')
+    call setline(row, line.a:char)
   endif
   call cursor(row, column)
 endfunction
