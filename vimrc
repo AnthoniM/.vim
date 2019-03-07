@@ -12,6 +12,7 @@ Plugin 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
+Plugin 'ervandew/supertab'
 
 " *JavaScript*
 "Tern
@@ -23,12 +24,12 @@ Plugin 'epilande/vim-es2015-snippets'
 " React code snippets
 Plugin 'epilande/vim-react-snippets'
 
-Plugin 'pangloss/vim-javascript'
+" Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 
 " *Python*
 " Import
-Plugin 'mgedmin/python-imports.vim'
+" Plugin 'mgedmin/python-imports.vim'
 Plugin 'ludovicchabant/vim-gutentags'
 
 "YouCompleteMe
@@ -80,6 +81,9 @@ Plugin 'vim-scripts/argtextobj.vim'
 " Util shortcuts
 Plugin 'tpope/vim-unimpaired'
 
+" Terminal
+Plugin 'tc50cal/vim-terminal'
+
 " To repeat plugin commands
 Plugin 'tpope/vim-repeat'
 
@@ -98,9 +102,6 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'leafgarland/typescript-vim'
 
-"Other
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
 
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
@@ -131,9 +132,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_javascript_eslint_exe = 'npm run lint'
 "let g:syntastic_python_checkers = ['flake8', 'PyFlakes', 'Pylint', 'python']
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_quiet_messages = {'regex': 'E501\|E231\|W291\|E999'}
+let g:syntastic_debug_file = "~/TEMP/syntastic.log"
 
 " AutoClose configuration
 let g:AutoCloseExpandEnterOn = 1
@@ -201,10 +204,19 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 "inoremap <Tab> <c-r>=UltiSnips#ExpandSnippet()<cr>
-let g:UltiSnipsExpandTrigger="<c-l>"
-let g:UltiSnipsJumpForwardTrigger=">"
-let g:UltiSnipsJumpBackwardTrigger="<"
+" let g:UltiSnipsExpandTrigger="<c-l>"
+" let g:UltiSnipsJumpForwardTrigger=">"
+" let g:UltiSnipsJumpBackwardTrigger="<"
 
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
