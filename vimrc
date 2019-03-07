@@ -427,6 +427,7 @@ if has("win32") || has('win32unix')
   scriptencoding utf-8
   set encoding=utf-8
   set fileencoding=uft-8
+  set ff=unix
   " Set default font size
   set guifont=Consolas:h12:cANSI:qDRAFT
 endif
