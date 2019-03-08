@@ -217,6 +217,7 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsListSnippets="<c-l>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
@@ -293,7 +294,7 @@ augroup filetype_vim
     " source .vimrc every time it is saved
     autocmd BufWritePost .vimrc source %
     autocmd FileType vim setlocal foldmethod=marker
-    set commentstring=\"\ %s
+    autocmd FileType vim :set commentstring=\"\ %s
 augroup END
 
 " Set $MYVIMRC
