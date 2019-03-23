@@ -132,6 +132,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_typescript_checkers = ['tslint']
 " let g:syntastic_javascript_eslint_exe = 'npm run lint'
 "let g:syntastic_python_checkers = ['flake8', 'PyFlakes', 'Pylint', 'python']
 let g:syntastic_python_checkers = ['flake8']
@@ -140,6 +141,7 @@ let g:syntastic_debug_file = "~/TEMP/syntastic.log"
 
 " AutoClose configuration
 let g:AutoCloseExpandEnterOn = 1
+let g:AutoCloseExpandSpace = 1
 
 " Fzf Configuration
 " This is the default extra key bindings
@@ -435,6 +437,7 @@ endif
 inoremap dfj <cr><esc>O
 inoremap dfl <right>
 inoremap dfh <left>
+inoremap dfa <esc>A
 inoremap ;; <esc>l:call <SID>TerminateLine(';')<cr>i
 nnoremap ;; :call <SID>TerminateLine(';')<cr>
 inoremap ,, <esc>l:call <SID>TerminateLine(',')<cr>i
@@ -475,3 +478,8 @@ set listchars=tab:»\ ,space:·,extends:›,precedes:‹,nbsp:·,trail:·
 let g:html_indent_inctags = "a,abbr,address,area,article,aside,audio,b,base,bdi,bdo,blockquote,body,br,button,canvas,caption,cite,code,col,colgroup,data,datalist,dd,del,details,dfn,dialog,div,dl,dt,em,embed,fieldset,figure,footer,form,h1,h2,h3,h4,h5,h6,head,header,hgroup,hr,html,i,iframe,img,input,ins,kbd,keygen,label,legend,li,link,main,map,mark,menu,menuitem,meta,meter,nav,noscript,object,ol,optgroup,option,output,p,param,pre,progress,q,rb,rp,rt,rtc,ruby,s,samp,script,section,select,small,source,span,strong,style,sub,summary,sup,table,tbody,td,template,textarea,tfoot,th,thead,time,title,tr,track,u,ul,var,video,wbr"
 
 au BufNewFile,BufRead *.ejs set filetype=html
+
+" Highlight ES6 template strings
+hi link javaScriptTemplateDelim String
+hi link javaScriptTemplateVar Text
+hi link javaScriptTemplateString String
