@@ -1,5 +1,8 @@
 bundle/
 vim80/
-*.sw*
+vim81/
+*.sw[pao]
+.*.sw[pao]
+*~
 plugin/webMethods/vim-generateDocumentType/
 tags

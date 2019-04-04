@@ -12,6 +12,7 @@ Plugin 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
+Plugin 'ervandew/supertab'
 
 " *JavaScript*
 "Tern
@@ -23,12 +24,12 @@ Plugin 'epilande/vim-es2015-snippets'
 " React code snippets
 Plugin 'epilande/vim-react-snippets'
 
-Plugin 'pangloss/vim-javascript'
+" Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
 
 " *Python*
 " Import
-Plugin 'mgedmin/python-imports.vim'
+" Plugin 'mgedmin/python-imports.vim'
 Plugin 'ludovicchabant/vim-gutentags'
 
 "YouCompleteMe
@@ -80,6 +81,9 @@ Plugin 'vim-scripts/argtextobj.vim'
 " Util shortcuts
 Plugin 'tpope/vim-unimpaired'
 
+" Terminal
+Plugin 'tc50cal/vim-terminal'
+
 " To repeat plugin commands
 Plugin 'tpope/vim-repeat'
 
@@ -98,9 +102,6 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'leafgarland/typescript-vim'
 
-"Other
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
 
 " Theme / Interface
 Plugin 'vim-airline/vim-airline'
@@ -131,9 +132,11 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_javascript_eslint_exe = 'npm run lint'
 "let g:syntastic_python_checkers = ['flake8', 'PyFlakes', 'Pylint', 'python']
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_quiet_messages = {'regex': 'E501\|E231\|W291\|E999'}
+let g:syntastic_debug_file = "~/TEMP/syntastic.log"
 
 " AutoClose configuration
 let g:AutoCloseExpandEnterOn = 1
@@ -201,10 +204,20 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 "inoremap <Tab> <c-r>=UltiSnips#ExpandSnippet()<cr>
-let g:UltiSnipsExpandTrigger="<c-l>"
-let g:UltiSnipsJumpForwardTrigger=">"
-let g:UltiSnipsJumpBackwardTrigger="<"
+" let g:UltiSnipsExpandTrigger="<c-l>"
+" let g:UltiSnipsJumpForwardTrigger=">"
+" let g:UltiSnipsJumpBackwardTrigger="<"
 
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+let g:UltiSnipsListSnippets="<c-l>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
@@ -281,14 +294,14 @@ augroup filetype_vim
     " source .vimrc every time it is saved
     autocmd BufWritePost .vimrc source %
     autocmd FileType vim setlocal foldmethod=marker
-    set commentstring=\"\ %s
+    autocmd FileType vim :set commentstring=\"\ %s
 augroup END
 
 " Set $MYVIMRC
 let $MYVIMRC='~/.vim/vimrc'
 "Open .vimrc in a vsplit
-:nnoremap <leader>ev :vsplit $MYVIMRC<cr>:only<cr>
-:nnoremap <leader>eh :split $MYVIMRC<cr>:only<cr>
+:nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+:nnoremap <leader>eh :split $MYVIMRC<cr>
 
 "
 " Colors
@@ -425,10 +438,12 @@ set t_vb=
 nnoremap <c-f> :%s#<c-v><c-m>##ge<cr>:%s#><#>\r<#ge<cr>:%s#<\(\w\+\) *[^>]*>\zs$\n\s*\s*\ze</\1##ge<cr>gg=G<cr>
 
 
-if has("win32")
+if has("win32") || has('win32unix')
   set runtimepath^=~/.vim/
-  scriptencoding uft-8
+  scriptencoding utf-8
+  set encoding=utf-8
   set fileencoding=uft-8
+  set ff=unix
   " Set default font size
   set guifont=Consolas:h12:cANSI:qDRAFT
 endif
@@ -436,16 +451,18 @@ endif
 inoremap dfj <cr><esc>O
 inoremap dfl <right>
 inoremap dfh <left>
-inoremap ;; <esc>l:call <SID>TerminateLine()<cr>i
-nnoremap ;; :call <SID>TerminateLine()<cr>
+inoremap ;; <esc>l:call <SID>TerminateLine(';')<cr>i
+nnoremap ;; :call <SID>TerminateLine(';')<cr>
+inoremap ,, <esc>l:call <SID>TerminateLine(',')<cr>i
+nnoremap ,, :call <SID>TerminateLine(',')<cr>
 
-function! s:TerminateLine()
+function! s:TerminateLine(char)
   let [row, column] = getcurpos()[1:2]
   let line = getline('.')
-  if line[-1:] == ';'
+  if line[-1:] == a:char
     call setline(row, line[:-2])
   else
-    call setline(row, line.';')
+    call setline(row, line.a:char)
   endif
   call cursor(row, column)
 endfunction
@@ -473,3 +490,4 @@ set listchars=tab:»\ ,space:·,extends:›,precedes:‹,nbsp:·,trail:·
 
 let g:html_indent_inctags = "a,abbr,address,area,article,aside,audio,b,base,bdi,bdo,blockquote,body,br,button,canvas,caption,cite,code,col,colgroup,data,datalist,dd,del,details,dfn,dialog,div,dl,dt,em,embed,fieldset,figure,footer,form,h1,h2,h3,h4,h5,h6,head,header,hgroup,hr,html,i,iframe,img,input,ins,kbd,keygen,label,legend,li,link,main,map,mark,menu,menuitem,meta,meter,nav,noscript,object,ol,optgroup,option,output,p,param,pre,progress,q,rb,rp,rt,rtc,ruby,s,samp,script,section,select,small,source,span,strong,style,sub,summary,sup,table,tbody,td,template,textarea,tfoot,th,thead,time,title,tr,track,u,ul,var,video,wbr"
 
+au BufNewFile,BufRead *.ejs set filetype=html
