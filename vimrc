@@ -362,6 +362,21 @@ set background=dark
 "
 " Autogroups
 "
+
+au BufNewFile,BufRead *.py
+\ setlocal tabstop=4
+\ | setlocal softtabstop=4
+\ | setlocal shiftwidth=4
+\ | setlocal textwidth=79
+\ | setlocal expandtab
+\ | setlocal autoindent
+\ | setlocal fileformat=unix
+
+au BufNewFile,BufRead *.js, *.html, *.css
+\ setlocal tabstop=2
+\ | setlocal softtabstop=2
+\ | setlocal shiftwidth=2
+
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
