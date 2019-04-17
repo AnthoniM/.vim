@@ -8,24 +8,28 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Track the engine.
-Plugin 'SirVer/ultisnips'
+" Plugin 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
+" Plugin 'honza/vim-snippets'
 Plugin 'ervandew/supertab'
+
+" To edit HTML
+Plugin 'mattn/emmet-vim'
 
 " *JavaScript*
 "Tern
 Plugin 'ternjs/tern_for_vim'
 
 " ES2015 code snippets (Optional)
-Plugin 'epilande/vim-es2015-snippets'
+" Plugin 'epilande/vim-es2015-snippets'
 
 " React code snippets
-Plugin 'epilande/vim-react-snippets'
+" Plugin 'epilande/vim-react-snippets'
 
 " Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'jelera/vim-javascript-syntax'
 
 " *Python*
 " Import
@@ -46,6 +50,11 @@ Plugin 'AnthoniM/vim-tag'
 " Change surround : cs<old><new>
 " Delete surround : ds<char>
 Plugin 'tpope/vim-surround'
+
+" 
+Plugin 'tpope/vim-dispatch'
+" Plugin 'tpope/vim-endwise'
+" Plugin 'tpope/eunuch'
 
 " Comment lines with motion : gc / gcc
 Plugin 'tpope/vim-commentary'
@@ -424,9 +433,9 @@ set t_vb=
 nnoremap <c-f> :%s#<c-v><c-m>##ge<cr>:%s#><#>\r<#ge<cr>:%s#<\(\w\+\) *[^>]*>\zs$\n\s*\s*\ze</\1##ge<cr>gg=G<cr>
 
 
-if has("win32") || has('win32unix')
+if has("win32")
   set runtimepath^=~/.vim/
-  scriptencoding utf-8
+  " scriptencoding utf-8
   set encoding=utf-8
   set fileencoding=uft-8
   set ff=unix
@@ -473,7 +482,8 @@ endfunction
 nnoremap <F8> :call FindAll()<cr>
 
 set list
-set listchars=tab:»\ ,space:·,extends:›,precedes:‹,nbsp:·,trail:·
+set listchars=tab:»\ ,space:·,extends:›,precedes:‹,nbsp:·,trail:·,eol:¬
+
 
 let g:html_indent_inctags = "a,abbr,address,area,article,aside,audio,b,base,bdi,bdo,blockquote,body,br,button,canvas,caption,cite,code,col,colgroup,data,datalist,dd,del,details,dfn,dialog,div,dl,dt,em,embed,fieldset,figure,footer,form,h1,h2,h3,h4,h5,h6,head,header,hgroup,hr,html,i,iframe,img,input,ins,kbd,keygen,label,legend,li,link,main,map,mark,menu,menuitem,meta,meter,nav,noscript,object,ol,optgroup,option,output,p,param,pre,progress,q,rb,rp,rt,rtc,ruby,s,samp,script,section,select,small,source,span,strong,style,sub,summary,sup,table,tbody,td,template,textarea,tfoot,th,thead,time,title,tr,track,u,ul,var,video,wbr"
 
